@@ -17,36 +17,65 @@ type Equipment struct {
 }
 
 type Character struct {
-	Name      string
-	Class     string
-	Level     int
-	MaxHP     int
-	HP        int
-	Inventory []string
-	Skills    []string
-	Gold      int
-	Equipment Equipment
+	Name              string
+	Class             string
+	Level             int
+	MaxHP             int
+	HP                int
+	Inventory         []string
+	Skills            []string
+	Gold              int
+	Equipment         Equipment
+	InventoryCapacity int
+	UpgradeCount      int
 }
 
-const MaxInventory = 10
+type Monster struct {
+	Name      string
+	MaxHP     int
+	HP        int
+	AttackPts int
+}
+
+func initGoblin() Monster {
+	return Monster{
+		Name:      "Gobelin d'entraînement",
+		MaxHP:     40,
+		HP:        40,
+		AttackPts: 5,
+	}
+}
 
 func initCharacter(name string, class string, level int, maxHP int, currentHP int, inventory []string) Character {
 	return Character{
-		Name:      name,
-		Class:     class,
-		Level:     level,
-		MaxHP:     maxHP,
-		HP:        currentHP,
-		Inventory: inventory,
-		Skills:    []string{"Coup de poing"},
-		Gold:      100,
-		Equipment: Equipment{Head: "", Torso: "", Feet: ""},
+		Name:              name,
+		Class:             class,
+		Level:             level,
+		MaxHP:             maxHP,
+		HP:                currentHP,
+		Inventory:         inventory,
+		Skills:            []string{"Coup de poing"},
+		Gold:              100,
+		Equipment:         Equipment{Head: "", Torso: "", Feet: ""},
+		InventoryCapacity: 10,
+		UpgradeCount:      0,
+	}
+}
+
+func (c *Character) upgradeInventorySlot() {
+	if c.UpgradeCount < 3 {
+		c.InventoryCapacity += 10
+		c.UpgradeCount++
+		fmt.Printf("Inventaire augmenté ! Nouvelle capacité : %d (Améliorations utilisées : %d/3)\n",
+			c.InventoryCapacity, c.UpgradeCount)
+	} else {
+		fmt.Println("Vous avez déjà utilisé toutes vos améliorations d'inventaire (3/3) !")
 	}
 }
 
 func IsAlpha(s string) bool {
 	for _, r := range s {
-		if !unicode.IsLetter(r) {
+		if !(unicode.IsLetter(r) || r == ' ' || r == '-') {
 			return false
 		}
 	}
@@ -80,38 +109,42 @@ func characterCreation(reader *bufio.Reader) Character {
 			name = formatNom(input)
 			break
 		} else {
-			fmt.Println("Erreur : le nom ne doit contenir que des lettres.")
+			fmt.Println("Erreur : le nom ne doit contenir que des lettres, espaces ou tirets.")
 		}
 	}
-	fmt.Println("choisit ta class : ")
-	fmt.Println("1 - elfe : 80 pv max")
-	fmt.Println("2 - humain : 100 pv max")
-	fmt.Println("3 - nain : 120 pv max")
-	fmt.Print("choix >")
+
+	fmt.Println("\nChoisis ta classe :")
+	fmt.Println("1 - Elfe (80 PV max)")
+	fmt.Println("2 - Humain (100 PV max)")
+	fmt.Println("3 - Nain (120 PV max)")
+	fmt.Print("Choix > ")
 	classe, _ := reader.ReadString('\n')
 	classe = strings.TrimSpace(classe)
+
 	var class string
 	var MaxHP, HP int
+
 	switch classe {
 	case "1":
-		class = "elfe"
+		class = "Elfe"
 		MaxHP = 80
 		HP = 40
 	case "2":
-		class = "humain"
+		class = "Humain"
 		MaxHP = 100
 		HP = 50
 	case "3":
-		class = "nain"
+		class = "Nain"
 		MaxHP = 120
 		HP = 60
 	default:
 		fmt.Println("Choix invalide.")
-		fmt.Println("classe par défaut : humain")
-		class = "humain"
+		fmt.Println("Classe par défaut : Humain")
+		class = "Humain"
 		MaxHP = 100
 		HP = 50
 	}
+
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
 	return initCharacter(name, class, 1, MaxHP, HP, initialInventory)
 }
@@ -123,13 +156,19 @@ func displayInfo(c *Character) {
 	fmt.Printf("Niveau     : %d\n", c.Level)
 	fmt.Printf("PV         : %d / %d\n", c.HP, c.MaxHP)
 	fmt.Printf("Or         : %d\n", c.Gold)
-	fmt.Printf("Inventaire : %d/%d item(s)\n", len(c.Inventory), MaxInventory)
+	fmt.Printf("Inventaire : %d/%d item(s)\n", len(c.Inventory), c.InventoryCapacity)
+
 	if len(c.Inventory) > 0 {
-		fmt.Println("  Items :", strings.Join(c.Inventory, ", "))
+		for i, it := range c.Inventory {
+			fmt.Printf("  %d. %s\n", i+1, formatNom(it))
+		}
 	}
+
 	if len(c.Skills) > 0 {
 		fmt.Println("Sorts      :", strings.Join(c.Skills, ", "))
 	}
+	fmt.Printf("Équipement : Tête [%s], Torse [%s], Pieds [%s]\n",
+		c.Equipment.Head, c.Equipment.Torso, c.Equipment.Feet)
 	fmt.Println("=================================")
 }
 
@@ -158,12 +197,13 @@ func spellBook(c *Character) {
 }
 
 func addInventory(c *Character, item string) {
-	if len(c.Inventory) >= MaxInventory {
-		fmt.Println("Inventaire plein ! Vous ne pouvez pas ajouter plus de 10 items.")
+	if len(c.Inventory) >= c.InventoryCapacity {
+		fmt.Printf("Inventaire plein ! (max %d)\n", c.InventoryCapacity)
 		return
 	}
+	item = strings.ToLower(item)
 	c.Inventory = append(c.Inventory, item)
-	fmt.Printf("%s a été ajouté à l'inventaire.\n", item)
+	fmt.Printf("%s a été ajouté à l'inventaire.\n", formatNom(item))
 }
 
 func removeInventory(c *Character, item string) bool {
@@ -179,13 +219,13 @@ func removeInventory(c *Character, item string) bool {
 func takePotion(c *Character) {
 	found := -1
 	for i, v := range c.Inventory {
-		if strings.Contains(strings.ToLower(v), "potion") {
+		if strings.Contains(strings.ToLower(v), "potion de vie") {
 			found = i
 			break
 		}
 	}
 	if found == -1 {
-		fmt.Println("Aucune potion disponible.")
+		fmt.Println("Aucune potion de vie disponible.")
 		return
 	}
 
@@ -259,6 +299,9 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 			} else if strings.Contains(strings.ToLower(item), "livre de sort : boule de feu") {
 				removeInventory(c, item)
 				spellBook(c)
+			} else if strings.Contains(strings.ToLower(item), "amélioration d'inventaire") {
+				removeInventory(c, item)
+				c.upgradeInventorySlot()
 			} else {
 				fmt.Printf("L'utilisation de %s n'est pas encore implémentée.\n", item)
 			}
@@ -270,43 +313,74 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 }
 
 func marchand(c *Character, reader *bufio.Reader) {
-	inventaire := []string{"potion de vie", "potion de poison", "livre de sort : boule de feu", "fourrure de loup", "peau de troll", "cuir de sanglier", "plume de corbeau"}
-	prix := []int{3, 6, 25, 4, 7, 3, 1}
-
-	fmt.Println("\n--- Marchand ---")
-	for i, item := range inventaire {
-		fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
+	inventaire := []string{
+		"potion de vie",
+		"potion de poison",
+		"livre de sort : boule de feu",
+		"fourrure de loup",
+		"peau de troll",
+		"cuir de sanglier",
+		"plume de corbeau",
+		"amélioration d'inventaire",
 	}
-	fmt.Println("Voulez-vous acheter un item ? (o/n)")
-	fmt.Print("Choix : ")
-	choice, _ := reader.ReadString('\n')
-	choice = strings.TrimSpace(choice)
+	prix := []int{3, 6, 25, 4, 7, 3, 1, 30}
 
-	if choice == "o" {
-		fmt.Print("Numéro de l'objet à acheter : ")
-		numStr, _ := reader.ReadString('\n')
-		numStr = strings.TrimSpace(numStr)
-		idx, err := strconv.Atoi(numStr)
-		if err != nil || idx < 1 || idx > len(inventaire) {
-			fmt.Println("Numéro invalide.")
+	for {
+		fmt.Println("\n--- Marchand ---")
+		fmt.Printf("Vous avez %d or.\n", c.Gold)
+		for i, item := range inventaire {
+			fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
+		}
+		fmt.Println("Tapez le numéro de l’objet à acheter, ou 'q' pour quitter.")
+		fmt.Print("Choix : ")
+
+		choice, _ := reader.ReadString('\n')
+		choice = strings.TrimSpace(choice)
+
+		if strings.ToLower(choice) == "q" {
+			fmt.Println("Vous quittez le marchand.")
 			return
 		}
+
+		idx, err := strconv.Atoi(choice)
+		if err != nil || idx < 1 || idx > len(inventaire) {
+			fmt.Println("Numéro invalide.")
+			continue
+		}
+
 		item := inventaire[idx-1]
 		prixItem := prix[idx-1]
 
-		if len(c.Inventory) >= MaxInventory {
-			fmt.Println(" Inventaire plein ! Vous ne pouvez pas acheter cet objet.")
-			return
+		if len(c.Inventory) >= c.InventoryCapacity &&
+			item != "amélioration d'inventaire" &&
+			item != "livre de sort : boule de feu" {
+			fmt.Printf("Inventaire plein ! Vous ne pouvez pas acheter cet objet (max %d).\n", c.InventoryCapacity)
+			continue
 		}
 
 		if c.Gold < prixItem {
-			fmt.Println("Pas assez d'or !")
-			return
+			fmt.Printf("Pas assez d’or ! (%s coûte %d or, il vous manque %d)\n",
+				item, prixItem, prixItem-c.Gold)
+			continue
 		}
 
 		c.Gold -= prixItem
-		addInventory(c, item)
-		fmt.Printf("Vous avez acheté : %s (-%d or)\n", item, prixItem)
+
+		switch item {
+		case "livre de sort : boule de feu":
+			spellBook(c)
+			fmt.Printf("Vous avez acheté et appris directement : %s (-%d or)\n", item, prixItem)
+
+		case "amélioration d'inventaire":
+			c.upgradeInventorySlot()
+			fmt.Printf("Vous avez acheté et utilisé : %s (-%d or)\n", item, prixItem)
+
+		default:
+			addInventory(c, item)
+			fmt.Printf("Vous avez acheté : %s (-%d or)\n", item, prixItem)
+		}
+
+		fmt.Printf("Or restant : %d\n", c.Gold)
 	}
 }
 
@@ -316,17 +390,18 @@ func forgeron(c *Character, reader *bufio.Reader) {
 	MatériauxTunique := []string{"Fourrure de loup", "Fourrure de loup", "Peau de Troll"}
 	MatériauxBottes := []string{"Fourrure de loup", "Cuir de Sanglier"}
 	prix := []int{10, 10, 10}
+
 	fmt.Println("\n--- Forgeron ---")
 	for i, item := range inventaire {
 		fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
 	}
-	fmt.Println("Voulez-vous acheter un item ? (o/n)")
+	fmt.Println("Voulez-vous fabriquer un item ? (o/n)")
 	fmt.Print("Choix : ")
 	choice, _ := reader.ReadString('\n')
 	choice = strings.TrimSpace(choice)
-	switch choice {
-	case "o":
-		fmt.Println("Numéro de l'objet à acheter : ")
+
+	if choice == "o" {
+		fmt.Print("Numéro de l'objet à fabriquer : ")
 		numStr, _ := reader.ReadString('\n')
 		numStr = strings.TrimSpace(numStr)
 		idx, err := strconv.Atoi(numStr)
@@ -344,51 +419,59 @@ func forgeron(c *Character, reader *bufio.Reader) {
 		} else {
 			mat = MatériauxBottes
 		}
-		fmt.Println("voulez vous fabriquer :")
-		fmt.Printf("%s", item)
-		fmt.Print("\n")
-		fmt.Println("il vous demande comme mathériaux : ")
-		fmt.Printf("%s", mat)
-		fmt.Print("\n")
-		fmt.Println("voulez vous continuez : o / n")
-		choice2, _ := reader.ReadString('\n')
-		choice2 = strings.TrimSpace(choice2)
-		switch choice2 {
-		case "o":
-			for _, m := range mat {
-				found := false
-				for _, inv := range c.Inventory {
-					if strings.EqualFold(inv, m) {
-						found = true
-						break
-					}
-				}
-				if !found {
-					fmt.Printf("Il vous manque le matériau : %s\n", m)
-					return
+		fmt.Println("Matériaux requis :", mat)
+
+		for _, m := range mat {
+			found := false
+			for _, inv := range c.Inventory {
+				if strings.EqualFold(inv, m) {
+					found = true
+					break
 				}
 			}
-			for _, m := range mat {
-				for i, inv := range c.Inventory {
-					if strings.EqualFold(inv, m) {
-						c.Inventory = append(c.Inventory[:i], c.Inventory[i+1:]...)
-						break
-					}
-				}
-			}
-			if len(c.Inventory) >= MaxInventory {
-				fmt.Println(" Inventaire plein ! Vous ne pouvez pas acheter cet objet.")
+			if !found {
+				fmt.Printf("Il vous manque le matériau : %s\n", m)
 				return
 			}
-
-			if c.Gold < prixItem {
-				fmt.Println("Pas assez d'or !")
-				return
+		}
+		for _, m := range mat {
+			for i, inv := range c.Inventory {
+				if strings.EqualFold(inv, m) {
+					c.Inventory = append(c.Inventory[:i], c.Inventory[i+1:]...)
+					break
+				}
 			}
+		}
+		if len(c.Inventory) >= c.InventoryCapacity {
+			fmt.Println("Inventaire plein ! Vous ne pouvez pas fabriquer cet objet.")
+			return
+		}
 
-			c.Gold -= prixItem
-			addInventory(c, item)
-			fmt.Printf("Vous avez fabriquer : %s (-%d or)\n", item, prixItem)
+		if c.Gold < prixItem {
+			fmt.Println("Pas assez d'or !")
+			return
+		}
+
+		c.Gold -= prixItem
+		addInventory(c, item)
+		fmt.Printf("Vous avez fabriqué : %s (-%d or)\n", item, prixItem)
+	}
+}
+
+func goblinPattern(goblin *Monster, player *Character, turns int) {
+	for turn := 1; turn <= turns; turn++ {
+		damage := goblin.AttackPts
+		if turn%3 == 0 {
+			damage *= 2
+		}
+		player.HP -= damage
+		if player.HP < 0 {
+			player.HP = 0
+		}
+		fmt.Printf("%s inflige à %s %d de dégâts\n", goblin.Name, player.Name, damage)
+		fmt.Printf("%s : %d/%d PV\n\n", player.Name, player.HP, player.MaxHP)
+		if player.IsDead() {
+			break
 		}
 	}
 }
@@ -398,8 +481,9 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		fmt.Println("\nMenu Principal")
 		fmt.Println("1 - Afficher les informations du personnage")
 		fmt.Println("2 - Accéder au contenu de l'inventaire")
-		fmt.Println("3 - Voir le Forgeron ")
-		fmt.Println("4 - Quitter")
+		fmt.Println("3 - Voir le Forgeron")
+		fmt.Println("4 - Combattre le Gobelin d'entraînement")
+		fmt.Println("5 - Quitter")
 		fmt.Print("Choix > ")
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
@@ -412,6 +496,10 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		case "3":
 			forgeron(c, reader)
 		case "4":
+			goblin := initGoblin()
+			fmt.Println("\n--- Début du combat contre le Gobelin d’entraînement ---")
+			goblinPattern(&goblin, c, 6)
+		case "5":
 			fmt.Println("Au revoir !")
 			return
 		default:
@@ -422,7 +510,7 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Projet RED - Test")
+	fmt.Println("Projet RED - Fusion")
 
 	c1 := characterCreation(reader)
 
