@@ -37,7 +37,7 @@ func initCharacter(name string, class string, level int, maxHP int, currentHP in
 		Inventory: inventory,
 		Skills:    []string{"Coup de poing"},
 		Gold:      100,
-		Equipment: Equipment{"", "", ""},
+		Equipment: Equipment{Head: "", Torso: "", Feet: ""},
 	}
 }
 
@@ -130,7 +130,7 @@ func poisonPot(c *Character) {
 		}
 		fmt.Printf("Dégâts de poison (%ds) : %d/%d PV\n", i, c.HP, c.MaxHP)
 		if c.IsDead() {
-			break
+			return
 		}
 	}
 }
@@ -172,8 +172,7 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 			item := c.Inventory[idx-1]
 
 			if strings.Contains(strings.ToLower(item), "potion de vie") {
-				takePotion(c)
-				removeInventory(c, item)
+				takePotion(c) // déjà géré
 			} else if strings.Contains(strings.ToLower(item), "potion de poison") {
 				removeInventory(c, item)
 				poisonPot(c)
@@ -191,25 +190,19 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 }
 
 func marchand(c *Character, reader *bufio.Reader) {
-	inventaire := []string{"potion de vie", "potion de poison", "Livre de Sort : Boule de Feu"}
-	if len(inventaire) == 0 {
-		fmt.Println("Le marchand n'a rien a vendre")
-		return
-	} else {
-		for i, item := range inventaire {
-			fmt.Printf("%d. %s\n", i+1, item)
-		}
+	inventaire := []string{"potion de vie", "potion de poison", "livre de sort : boule de feu"}
+	prix := []int{30, 20, 50}
+
+	fmt.Println("\n--- Marchand ---")
+	for i, item := range inventaire {
+		fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
 	}
-	fmt.Println("Voulez vous achetez un item")
-	fmt.Println("o / n")
-	fmt.Print("Choix :")
+	fmt.Println("Voulez-vous acheter un item ? (o/n)")
+	fmt.Print("Choix : ")
 	choice, _ := reader.ReadString('\n')
 	choice = strings.TrimSpace(choice)
 
-	switch choice {
-	case "n":
-		return
-	case "o":
+	if choice == "o" {
 		fmt.Print("Numéro de l'objet à acheter : ")
 		numStr, _ := reader.ReadString('\n')
 		numStr = strings.TrimSpace(numStr)
@@ -219,10 +212,15 @@ func marchand(c *Character, reader *bufio.Reader) {
 			return
 		}
 		item := inventaire[idx-1]
-		if strings.Contains(strings.ToLower(item), "") {
-			addInventory(c, item)
-			fmt.Printf("Vous avez acheté : %s\n", item)
+		prixItem := prix[idx-1]
+
+		if c.Gold < prixItem {
+			fmt.Println("Pas assez d'or !")
+			return
 		}
+		c.Gold -= prixItem
+		addInventory(c, item)
+		fmt.Printf("Vous avez acheté : %s (-%d or)\n", item, prixItem)
 	}
 }
 
@@ -260,9 +258,10 @@ func main() {
 		name = "Joueur"
 	}
 
-	initialInventory := []string{"Potion de vie", "Potion de vie", "Potion de vie"}
+	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
 	c1 := initCharacter(name, "Elfe", 1, 100, 40, initialInventory)
 
-	fmt.Printf("Personnage créé : %s (%s) - PV %d/%d - %d potions\n", c1.Name, c1.Class, c1.HP, c1.MaxHP, len(c1.Inventory))
+	fmt.Printf("Personnage créé : %s (%s) - PV %d/%d - %d potions\n",
+		c1.Name, c1.Class, c1.HP, c1.MaxHP, len(c1.Inventory))
 	mainMenu(&c1, reader)
 }
