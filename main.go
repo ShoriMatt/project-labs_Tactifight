@@ -87,11 +87,12 @@ func characterCreation(reader *bufio.Reader) Character {
 	fmt.Println("1 - elfe : 80 pv max")
 	fmt.Println("2 - humain : 100 pv max")
 	fmt.Println("3 - nain : 120 pv max")
+	fmt.Print("choix >")
 	classe, _ := reader.ReadString('\n')
 	classe = strings.TrimSpace(classe)
 	var class string
 	var MaxHP, HP int
-	switch name {
+	switch classe {
 	case "1":
 		class = "elfe"
 		MaxHP = 80
@@ -112,7 +113,7 @@ func characterCreation(reader *bufio.Reader) Character {
 		HP = 50
 	}
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
-	c1 := initCharacter(name, class, 1, MaxHP, HP, initialInventory)
+	return initCharacter(name, class, 1, MaxHP, HP, initialInventory)
 }
 
 func displayInfo(c *Character) {
