@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Equipment struct {
@@ -57,6 +58,30 @@ func displayInfo(c *Character) {
 	fmt.Println("=================================")
 }
 
+func (c *Character) IsDead() bool {
+	if c.HP <= 0 {
+		fmt.Printf("%s est mort...\n", c.Name)
+		c.HP = c.MaxHP / 2
+		fmt.Printf("%s est ressuscité avec %d/%d PV !\n", c.Name, c.HP, c.MaxHP)
+		return true
+	}
+	return false
+}
+
+func spellBook(c *Character) {
+	spell := "Boule de feu"
+
+	for _, s := range c.Skills {
+		if s == spell {
+			fmt.Println("Vous connaissez déjà le sort Boule de feu !")
+			return
+		}
+	}
+
+	c.Skills = append(c.Skills, spell)
+	fmt.Println("Nouveau sort appris :", spell)
+}
+
 func addInventory(c *Character, item string) {
 	c.Inventory = append(c.Inventory, item)
 }
@@ -95,6 +120,21 @@ func takePotion(c *Character) {
 	fmt.Printf("Tu as utilisé %s : PV %d -> %d / %d\n", potion, oldHP, c.HP, c.MaxHP)
 }
 
+func poisonPot(c *Character) {
+	fmt.Println("Tu as utilisé une potion de poison !")
+	for i := 1; i <= 3; i++ {
+		time.Sleep(1 * time.Second)
+		c.HP -= 10
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		fmt.Printf("Dégâts de poison (%ds) : %d/%d PV\n", i, c.HP, c.MaxHP)
+		if c.IsDead() {
+			break
+		}
+	}
+}
+
 func accessInventory(c *Character, reader *bufio.Reader) {
 	for {
 		fmt.Println("\nInventaire")
@@ -107,17 +147,16 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 		}
 		fmt.Println("\nOptions :")
 		fmt.Println("u - Utiliser un objet")
-		fmt.Println("m - Marchand")
+		fmt.Println("m - Aller voir le marchand")
 		fmt.Println("b - Retour")
 		fmt.Print("Choix > ")
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
 
-		switch choice {
-		case "b":
+		if choice == "b" {
 			return
-
-		case "u":
+		}
+		if choice == "u" {
 			if len(c.Inventory) == 0 {
 				fmt.Println("Aucun objet à utiliser.")
 				continue
@@ -131,19 +170,28 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 				continue
 			}
 			item := c.Inventory[idx-1]
-			if strings.Contains(strings.ToLower(item), "") {
+
+			if strings.Contains(strings.ToLower(item), "potion de vie") {
 				takePotion(c)
+				removeInventory(c, item)
+			} else if strings.Contains(strings.ToLower(item), "potion de poison") {
+				removeInventory(c, item)
+				poisonPot(c)
+			} else if strings.Contains(strings.ToLower(item), "livre de sort : boule de feu") {
+				removeInventory(c, item)
+				spellBook(c)
 			} else {
 				fmt.Printf("L'utilisation de %s n'est pas encore implémentée.\n", item)
 			}
-		case "m":
-			Marchand(c, reader)
+		}
+		if choice == "m" {
+			marchand(c, reader)
 		}
 	}
 }
 
-func Marchand(c *Character, reader *bufio.Reader) {
-	inventaire := []string{"potion de vie", "Livre de Sort : Boule de Feu"}
+func marchand(c *Character, reader *bufio.Reader) {
+	inventaire := []string{"potion de vie", "potion de poison", "Livre de Sort : Boule de Feu"}
 	if len(inventaire) == 0 {
 		fmt.Println("Le marchand n'a rien a vendre")
 		return
