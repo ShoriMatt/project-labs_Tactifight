@@ -107,15 +107,17 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 		}
 		fmt.Println("\nOptions :")
 		fmt.Println("u - Utiliser un objet")
+		fmt.Println("m - Marchand")
 		fmt.Println("b - Retour")
 		fmt.Print("Choix > ")
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
 
-		if choice == "b" {
+		switch choice {
+		case "b":
 			return
-		}
-		if choice == "u" {
+
+		case "u":
 			if len(c.Inventory) == 0 {
 				fmt.Println("Aucun objet à utiliser.")
 				continue
@@ -134,6 +136,44 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 			} else {
 				fmt.Printf("L'utilisation de %s n'est pas encore implémentée.\n", item)
 			}
+		case "m":
+			Marchand(c, reader)
+		}
+	}
+}
+
+func Marchand(c *Character, reader *bufio.Reader) {
+	inventaire := []string{"potion de vie"}
+	if len(inventaire) == 0 {
+		fmt.Println("Le marchand n'a rien a vendre")
+		return
+	} else {
+		for i, item := range inventaire {
+			fmt.Printf("%d. %s\n", i+1, item)
+		}
+	}
+	fmt.Println("voulez vous achetez un item")
+	fmt.Println("o / n")
+	fmt.Print("choix :")
+	choice, _ := reader.ReadString('\n')
+	choice = strings.TrimSpace(choice)
+
+	switch choice {
+	case "n":
+		return
+	case "o":
+		fmt.Print("Numéro de l'objet à acheter : ")
+		numStr, _ := reader.ReadString('\n')
+		numStr = strings.TrimSpace(numStr)
+		idx, err := strconv.Atoi(numStr)
+		if err != nil || idx < 1 || idx > len(inventaire) {
+			fmt.Println("Numéro invalide.")
+			return
+		}
+		item := inventaire[idx-1]
+		if strings.Contains(strings.ToLower(item), "potion de vie") {
+			addInventory(c, item)
+			fmt.Printf("Vous avez acheté : %s\n", item)
 		}
 	}
 }
