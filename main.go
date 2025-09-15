@@ -28,6 +28,8 @@ type Character struct {
 	Equipment Equipment
 }
 
+const MaxInventory = 10
+
 func initCharacter(name string, class string, level int, maxHP int, currentHP int, inventory []string) Character {
 	return Character{
 		Name:      name,
@@ -62,7 +64,7 @@ func formatNom(nom string) string {
 }
 
 func characterCreation(reader *bufio.Reader) Character {
-	var name string // <-- déclaré hors de la boucle
+	var name string
 
 	for {
 		fmt.Print("Entre ton nom (ou Entrée pour 'Joueur') : ")
@@ -93,7 +95,7 @@ func displayInfo(c *Character) {
 	fmt.Printf("Niveau     : %d\n", c.Level)
 	fmt.Printf("PV         : %d / %d\n", c.HP, c.MaxHP)
 	fmt.Printf("Or         : %d\n", c.Gold)
-	fmt.Printf("Inventaire : %d item(s)\n", len(c.Inventory))
+	fmt.Printf("Inventaire : %d/%d item(s)\n", len(c.Inventory), MaxInventory)
 	if len(c.Inventory) > 0 {
 		fmt.Println("  Items :", strings.Join(c.Inventory, ", "))
 	}
@@ -128,7 +130,12 @@ func spellBook(c *Character) {
 }
 
 func addInventory(c *Character, item string) {
+	if len(c.Inventory) >= MaxInventory {
+		fmt.Println("Inventaire plein ! Vous ne pouvez pas ajouter plus de 10 items.")
+		return
+	}
 	c.Inventory = append(c.Inventory, item)
+	fmt.Printf("%s a été ajouté à l'inventaire.\n", item)
 }
 
 func removeInventory(c *Character, item string) bool {
@@ -217,7 +224,7 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 			item := c.Inventory[idx-1]
 
 			if strings.Contains(strings.ToLower(item), "potion de vie") {
-				takePotion(c) // déjà géré
+				takePotion(c)
 			} else if strings.Contains(strings.ToLower(item), "potion de poison") {
 				removeInventory(c, item)
 				poisonPot(c)
@@ -259,10 +266,16 @@ func marchand(c *Character, reader *bufio.Reader) {
 		item := inventaire[idx-1]
 		prixItem := prix[idx-1]
 
+		if len(c.Inventory) >= MaxInventory {
+			fmt.Println(" Inventaire plein ! Vous ne pouvez pas acheter cet objet.")
+			return
+		}
+
 		if c.Gold < prixItem {
 			fmt.Println("Pas assez d'or !")
 			return
 		}
+
 		c.Gold -= prixItem
 		addInventory(c, item)
 		fmt.Printf("Vous avez acheté : %s (-%d or)\n", item, prixItem)
