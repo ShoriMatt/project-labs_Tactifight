@@ -131,7 +131,7 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 				continue
 			}
 			item := c.Inventory[idx-1]
-			if strings.Contains(strings.ToLower(item), "potion") {
+			if strings.Contains(strings.ToLower(item), "") {
 				takePotion(c)
 			} else {
 				fmt.Printf("L'utilisation de %s n'est pas encore implémentée.\n", item)
@@ -143,7 +143,7 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 }
 
 func Marchand(c *Character, reader *bufio.Reader) {
-	inventaire := []string{"potion de vie"}
+	inventaire := []string{"potion de vie", "Livre de Sort : Boule de Feu"}
 	if len(inventaire) == 0 {
 		fmt.Println("Le marchand n'a rien a vendre")
 		return
@@ -171,7 +171,7 @@ func Marchand(c *Character, reader *bufio.Reader) {
 			return
 		}
 		item := inventaire[idx-1]
-		if strings.Contains(strings.ToLower(item), "potion de vie") {
+		if strings.Contains(strings.ToLower(item), "") {
 			addInventory(c, item)
 			fmt.Printf("Vous avez acheté : %s\n", item)
 		}
