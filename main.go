@@ -310,12 +310,96 @@ func marchand(c *Character, reader *bufio.Reader) {
 	}
 }
 
+func forgeron(c *Character, reader *bufio.Reader) {
+	inventaire := []string{"Chapeau de l’aventurier", "Tunique de l’aventurier", "Bottes de l’aventurier"}
+	MatériauxChapeau := []string{"Plume de Corbeau", "Cuir de Sanglier"}
+	MatériauxTunique := []string{"Fourrure de loup", "Fourrure de loup", "Peau de Troll"}
+	MatériauxBottes := []string{"Fourrure de loup", "Cuir de Sanglier"}
+	prix := []int{10, 10, 10}
+	fmt.Println("\n--- Forgeron ---")
+	for i, item := range inventaire {
+		fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
+	}
+	fmt.Println("Voulez-vous acheter un item ? (o/n)")
+	fmt.Print("Choix : ")
+	choice, _ := reader.ReadString('\n')
+	choice = strings.TrimSpace(choice)
+	switch choice {
+	case "o":
+		fmt.Println("Numéro de l'objet à acheter : ")
+		numStr, _ := reader.ReadString('\n')
+		numStr = strings.TrimSpace(numStr)
+		idx, err := strconv.Atoi(numStr)
+		if err != nil || idx < 1 || idx > len(inventaire) {
+			fmt.Println("Numéro invalide.")
+			return
+		}
+		item := inventaire[idx-1]
+		prixItem := prix[idx-1]
+		var mat []string
+		if idx-1 == 0 {
+			mat = MatériauxChapeau
+		} else if idx-1 == 1 {
+			mat = MatériauxTunique
+		} else {
+			mat = MatériauxBottes
+		}
+		fmt.Println("voulez vous fabriquer :")
+		fmt.Printf("%s", item)
+		fmt.Print("\n")
+		fmt.Println("il vous demande comme mathériaux : ")
+		fmt.Printf("%s", mat)
+		fmt.Print("\n")
+		fmt.Println("voulez vous continuez : o / n")
+		choice2, _ := reader.ReadString('\n')
+		choice2 = strings.TrimSpace(choice2)
+		switch choice2 {
+		case "o":
+			for _, m := range mat {
+				found := false
+				for _, inv := range c.Inventory {
+					if strings.EqualFold(inv, m) {
+						found = true
+						break
+					}
+				}
+				if !found {
+					fmt.Printf("Il vous manque le matériau : %s\n", m)
+					return
+				}
+			}
+			for _, m := range mat {
+				for i, inv := range c.Inventory {
+					if strings.EqualFold(inv, m) {
+						c.Inventory = append(c.Inventory[:i], c.Inventory[i+1:]...)
+						break
+					}
+				}
+			}
+			if len(c.Inventory) >= MaxInventory {
+				fmt.Println(" Inventaire plein ! Vous ne pouvez pas acheter cet objet.")
+				return
+			}
+
+			if c.Gold < prixItem {
+				fmt.Println("Pas assez d'or !")
+				return
+			}
+
+			c.Gold -= prixItem
+			addInventory(c, item)
+			fmt.Printf("Vous avez fabriquer : %s (-%d or)\n", item, prixItem)
+		}
+	}
+}
+
 func mainMenu(c *Character, reader *bufio.Reader) {
 	for {
 		fmt.Println("\nMenu Principal")
 		fmt.Println("1 - Afficher les informations du personnage")
 		fmt.Println("2 - Accéder au contenu de l'inventaire")
-		fmt.Println("3 - Quitter")
+		fmt.Println("3 - Voir le Forgeron ")
+		fmt.Println("4 - Quitter")
 		fmt.Print("Choix > ")
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
@@ -326,6 +410,8 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		case "2":
 			accessInventory(c, reader)
 		case "3":
+			forgeron(c, reader)
+		case "4":
 			fmt.Println("Au revoir !")
 			return
 		default:
