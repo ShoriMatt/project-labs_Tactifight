@@ -13,7 +13,8 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		fmt.Println("2 - Accéder au contenu de l'inventaire")
 		fmt.Println("3 - Voir le Forgeron")
 		fmt.Println("4 - Combattre le Gobelin d'entraînement")
-		fmt.Println("5 - Quitter")
+		fmt.Println("5 - Qui sont-ils ?")
+		fmt.Println("6 - Quitter")
 		fmt.Print("Choix > ")
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
@@ -30,6 +31,8 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 			fmt.Println("\n--- Début du combat contre le Gobelin d’entraînement ---")
 			goblinPattern(&goblin, c, 6)
 		case "5":
+			fmt.Println("Les artistes cachés sont ABBA et Steven Spielberg !")
+		case "6":
 			fmt.Println("Au revoir !")
 			return
 		default:
