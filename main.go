@@ -200,9 +200,9 @@ func marchand(c *Character, reader *bufio.Reader) {
 			fmt.Printf("%d. %s\n", i+1, item)
 		}
 	}
-	fmt.Println("voulez vous achetez un item")
+	fmt.Println("Voulez vous achetez un item")
 	fmt.Println("o / n")
-	fmt.Print("choix :")
+	fmt.Print("Choix :")
 	choice, _ := reader.ReadString('\n')
 	choice = strings.TrimSpace(choice)
 
