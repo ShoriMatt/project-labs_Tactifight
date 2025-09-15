@@ -41,7 +41,7 @@ func initCharacter(name string, class string, level int, maxHP int, currentHP in
 }
 
 func displayInfo(c *Character) {
-	fmt.Println("\n=== Informations du personnage ===")
+	fmt.Println("\nInformations du personnage")
 	fmt.Printf("Nom        : %s\n", c.Name)
 	fmt.Printf("Classe     : %s\n", c.Class)
 	fmt.Printf("Niveau     : %d\n", c.Level)
