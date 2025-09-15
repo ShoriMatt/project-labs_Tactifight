@@ -191,7 +191,7 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 
 func marchand(c *Character, reader *bufio.Reader) {
 	inventaire := []string{"potion de vie", "potion de poison", "livre de sort : boule de feu"}
-	prix := []int{30, 20, 50}
+	prix := []int{3, 6, 25}
 
 	fmt.Println("\n--- Marchand ---")
 	for i, item := range inventaire {
