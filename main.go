@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"unicode"
 )
 
 type Equipment struct {
@@ -39,6 +40,50 @@ func initCharacter(name string, class string, level int, maxHP int, currentHP in
 		Gold:      100,
 		Equipment: Equipment{Head: "", Torso: "", Feet: ""},
 	}
+}
+
+func IsAlpha(s string) bool {
+	for _, r := range s {
+		if !unicode.IsLetter(r) {
+			return false
+		}
+	}
+	return true
+}
+
+func formatNom(nom string) string {
+	if len(nom) == 0 {
+		return ""
+	}
+	nom = strings.ToLower(nom)
+	r := []rune(nom)
+	r[0] = unicode.ToUpper(r[0])
+	return string(r)
+}
+
+func characterCreation(reader *bufio.Reader) Character {
+	var name string // <-- déclaré hors de la boucle
+
+	for {
+		fmt.Print("Entre ton nom (ou Entrée pour 'Joueur') : ")
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimSpace(input)
+
+		if input == "" {
+			name = "Joueur"
+			break
+		}
+
+		if IsAlpha(input) {
+			name = formatNom(input)
+			break
+		} else {
+			fmt.Println("Erreur : le nom ne doit contenir que des lettres.")
+		}
+	}
+
+	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
+	return initCharacter(name, "Elfe", 1, 100, 40, initialInventory)
 }
 
 func displayInfo(c *Character) {
@@ -251,17 +296,11 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Projet RED - Test")
-	fmt.Print("Entre ton nom (ou Entrée pour 'Joueur') : ")
-	name, _ := reader.ReadString('\n')
-	name = strings.TrimSpace(name)
-	if name == "" {
-		name = "Joueur"
-	}
 
-	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
-	c1 := initCharacter(name, "Elfe", 1, 100, 40, initialInventory)
+	c1 := characterCreation(reader)
 
 	fmt.Printf("Personnage créé : %s (%s) - PV %d/%d - %d potions\n",
 		c1.Name, c1.Class, c1.HP, c1.MaxHP, len(c1.Inventory))
+
 	mainMenu(&c1, reader)
 }
