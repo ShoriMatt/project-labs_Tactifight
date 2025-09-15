@@ -83,9 +83,36 @@ func characterCreation(reader *bufio.Reader) Character {
 			fmt.Println("Erreur : le nom ne doit contenir que des lettres.")
 		}
 	}
-
+	fmt.Println("choisit ta class : ")
+	fmt.Println("1 - elfe : 80 pv max")
+	fmt.Println("2 - humain : 100 pv max")
+	fmt.Println("3 - nain : 120 pv max")
+	classe, _ := reader.ReadString('\n')
+	classe = strings.TrimSpace(classe)
+	var class string
+	var MaxHP, HP int
+	switch name {
+	case "1":
+		class = "elfe"
+		MaxHP = 80
+		HP = 40
+	case "2":
+		class = "humain"
+		MaxHP = 100
+		HP = 50
+	case "3":
+		class = "nain"
+		MaxHP = 120
+		HP = 60
+	default:
+		fmt.Println("Choix invalide.")
+		fmt.Println("classe par défaut : humain")
+		class = "humain"
+		MaxHP = 100
+		HP = 50
+	}
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
-	return initCharacter(name, "Elfe", 1, 100, 40, initialInventory)
+	c1 := initCharacter(name, class, 1, MaxHP, HP, initialInventory)
 }
 
 func displayInfo(c *Character) {
