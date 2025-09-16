@@ -221,11 +221,8 @@ func displayInfo(c *Character) {
 	fmt.Printf("Classe     : %s\n", c.Class)
 	fmt.Printf("Niveau     : %d\n", c.Level)
 	fmt.Printf("PV         : %d / %d\n", c.HP, c.MaxHP)
-<<<<<<< HEAD
 	fmt.Printf("XP         : %d / %d\n", c.XP, c.XPToNext)
-=======
 	fmt.Printf("Initiative : %d\n", c.Initiative)
->>>>>>> ff37773 (add initiative)
 	fmt.Printf("Or         : %d\n", c.Gold)
 	fmt.Printf("Inventaire : %d/%d item(s)\n", len(c.Inventory), c.InventoryCapacity)
 

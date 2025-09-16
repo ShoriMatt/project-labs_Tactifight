@@ -11,6 +11,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 	inventaire := []string{
 		"potion de vie",
 		"potion de poison",
+		"potion de mana",
 		"livre de sort : boule de feu",
 		"fourrure de loup",
 		"peau de troll",
@@ -19,7 +20,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 		"amélioration d'inventaire",
 	}
 
-	prix := []int{3, 6, 25, 4, 7, 3, 1, 30}
+	prix := []int{3, 6, 5, 25, 4, 7, 3, 1, 30}
 
 	for {
 		fmt.Println("\n--- Marchand ---")
