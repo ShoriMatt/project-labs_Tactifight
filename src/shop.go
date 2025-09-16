@@ -12,11 +12,11 @@ func marchand(c *Character, reader *bufio.Reader) {
 		"potion de vie",
 		"potion de poison",
 		"potion de mana",
-		"livre de sort : boule de feu",
-		"fourrure de loup",
-		"peau de troll",
-		"cuir de sanglier",
-		"plume de corbeau",
+		"balle perçante",
+		"circuit imprimé",
+		"peau de chameau",
+		"morceau de cuir",
+		"poil de chameau",
 		"amélioration d'inventaire",
 	}
 	prix := []int{3, 6, 5, 25, 4, 7, 3, 1, 30}
@@ -55,7 +55,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 
 		if len(c.Inventory) >= c.InventoryCapacity &&
 			item != "amélioration d'inventaire" &&
-			item != "livre de sort : boule de feu" {
+			item != "balle perçante" {
 			centerText(fmt.Sprintf("Inventaire plein ! Vous ne pouvez pas acheter cet objet (max %d).", c.InventoryCapacity))
 			continue
 		}
@@ -68,9 +68,9 @@ func marchand(c *Character, reader *bufio.Reader) {
 		c.Gold -= prixItem
 
 		switch item {
-		case "livre de sort : boule de feu":
+		case "balle perçante":
 			spellBook(c)
-			centerText(fmt.Sprintf("Vous avez acheté et appris directement : %s (-%d or)", item, prixItem))
+			centerText(fmt.Sprintf("Vous avez acheté et chargé directement : %s (-%d or)", item, prixItem))
 		case "amélioration d'inventaire":
 			c.upgradeInventorySlot()
 			centerText(fmt.Sprintf("Vous avez acheté et utilisé : %s (-%d or)", item, prixItem))
@@ -84,10 +84,11 @@ func marchand(c *Character, reader *bufio.Reader) {
 }
 
 func forgeron(c *Character, reader *bufio.Reader) {
-	inventaire := []string{"Chapeau de l’aventurier", "Tunique de l’aventurier", "Bottes de l’aventurier"}
+	inventaire := []string{"Chapeau de rebel", "Tunique de rebel", "Bottes de rebel", "potion de poison cosmique"}
 	MatériauxChapeau := []string{"Plume de Corbeau", "Cuir de Sanglier"}
 	MatériauxTunique := []string{"Fourrure de loup", "Fourrure de loup", "Peau de Troll"}
 	MatériauxBottes := []string{"Fourrure de loup", "Cuir de Sanglier"}
+	MatériauxPotionPoison := []string{"Potion de poison", "bave de chameau mutant"}
 	prix := []int{10, 10, 10}
 
 	centerText(`
@@ -125,8 +126,10 @@ func forgeron(c *Character, reader *bufio.Reader) {
 		mat = MatériauxChapeau
 	} else if idx-1 == 1 {
 		mat = MatériauxTunique
-	} else {
+	} else if idx-1 == 2 {
 		mat = MatériauxBottes
+	} else if idx-1 == 3 {
+		mat = MatériauxPotionPoison
 	}
 	centerText(fmt.Sprintf("Matériaux requis : %v", mat))
 	centerText("voulez vous fabriquer cet objet ? (o/n)")
