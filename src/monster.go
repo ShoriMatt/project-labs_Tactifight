@@ -5,10 +5,11 @@ import (
 )
 
 type Monster struct {
-	Name     string
-	HP       int
-	MaxHP    int
-	XPReward int
+	Name       string
+	HP         int
+	MaxHP      int
+	XPReward   int
+	GoldReward int
 }
 
 func (m *Monster) IsDead() bool {
@@ -17,10 +18,11 @@ func (m *Monster) IsDead() bool {
 
 func initGoblin() Monster {
 	return Monster{
-		Name:     "Gobelin d'entraînement",
-		HP:       30,
-		MaxHP:    30,
-		XPReward: 10,
+		Name:       "Gobelin d'entraînement",
+		HP:         30,
+		MaxHP:      30,
+		XPReward:   10,
+		GoldReward: 5,
 	}
 }
 

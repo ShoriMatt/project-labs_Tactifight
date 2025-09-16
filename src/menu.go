@@ -76,6 +76,8 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 			if goblin.HP <= 0 {
 				centerText("🎉 Vous avez vaincu le gobelin !")
 				c.gainXP(goblin.XPReward)
+				c.Gold += goblin.GoldReward
+				centerText(fmt.Sprintf("💰 Vous obtenez %d or !", goblin.GoldReward))
 			} else if c.HP <= 0 {
 				centerText("💀 Vous avez été vaincu...")
 			}
