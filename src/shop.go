@@ -18,6 +18,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 		"plume de corbeau",
 		"amélioration d'inventaire",
 	}
+
 	prix := []int{3, 6, 25, 4, 7, 3, 1, 30}
 
 	for {
