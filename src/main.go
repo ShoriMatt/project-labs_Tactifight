@@ -8,7 +8,7 @@ import (
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Projet RED - Tactifight")
+	fmt.Println("Bienvenue sur TACTIFIGHT !")
 
 	c1 := characterCreation(reader)
 

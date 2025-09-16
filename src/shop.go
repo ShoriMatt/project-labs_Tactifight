@@ -11,6 +11,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 	inventaire := []string{
 		"potion de vie",
 		"potion de poison",
+		"potion de mana",
 		"livre de sort : boule de feu",
 		"fourrure de loup",
 		"peau de troll",
@@ -18,10 +19,15 @@ func marchand(c *Character, reader *bufio.Reader) {
 		"plume de corbeau",
 		"amélioration d'inventaire",
 	}
-	prix := []int{3, 6, 25, 4, 7, 3, 1, 30}
+
+	prix := []int{3, 6, 5, 25, 4, 7, 3, 1, 30}
 
 	for {
-		fmt.Println("\n--- Marchand ---")
+		fmt.Println(` _, _  _, __,  _, _,_  _, _, _ __,
+ |\/| /_\ |_) / '` + ` |_| /_\ |\ | | \
+ |  | | | | \ \ , | | | | | \| |_/
+ ~  ~ ~ ~ ~ ~  ~  ~ ~ ~ ~ ~  ~ ~  
+								  `)
 		fmt.Printf("Vous avez %d or.\n", c.Gold)
 		for i, item := range inventaire {
 			fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
@@ -86,7 +92,12 @@ func forgeron(c *Character, reader *bufio.Reader) {
 	MatériauxBottes := []string{"Fourrure de loup", "Cuir de Sanglier"}
 	prix := []int{10, 10, 10}
 
-	fmt.Println("\n--- Forgeron ---")
+	fmt.Println(`
+ __,  _, __,  _, __, __,  _, _, _
+ |_  / \ |_) / _ |_  |_) / \ |\ |
+ |   \ / | \ \ / |   | \ \ / | \|
+ ~    ~  ~ ~  ~  ~~~ ~ ~  ~  ~  ~
+								 `)
 	for i, item := range inventaire {
 		fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
 	}

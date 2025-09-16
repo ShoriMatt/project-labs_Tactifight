@@ -1,20 +1,27 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand/v2"
+)
 
 type Monster struct {
-	Name      string
-	MaxHP     int
-	HP        int
-	AttackPts int
+	Name       string
+	MaxHP      int
+	HP         int
+	AttackPts  int
+	XPReward   int
+	Initiative int
 }
 
 func initGoblin() Monster {
 	return Monster{
-		Name:      "Gobelin d'entraînement",
-		MaxHP:     40,
-		HP:        40,
-		AttackPts: 5,
+		Name:       "Gobelin d'entraînement",
+		MaxHP:      40,
+		HP:         40,
+		AttackPts:  5,
+		XPReward:   20,
+		Initiative: rand.IntN(100),
 	}
 }
 
@@ -31,7 +38,9 @@ func goblinPattern(goblin *Monster, player *Character, turns int) {
 		fmt.Printf("%s inflige à %s %d de dégâts\n", goblin.Name, player.Name, damage)
 		fmt.Printf("%s : %d/%d PV\n\n", player.Name, player.HP, player.MaxHP)
 		if player.IsDead() {
-			break
+			return
 		}
 	}
+	fmt.Printf("\n--- %s est vaincu ! ---\n", goblin.Name)
+	player.gainXP(goblin.XPReward)
 }

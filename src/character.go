@@ -18,27 +18,51 @@ type Character struct {
 	Level             int
 	MaxHP             int
 	HP                int
+	Initiative        int
+	MaxMana           int
+	Mana              int
 	Inventory         []string
 	Skills            []string
 	Gold              int
 	Equipment         Equipment
 	InventoryCapacity int
 	UpgradeCount      int
+	XP                int
+	XPToNext          int
 }
 
-func initCharacter(name string, class string, level int, maxHP int, currentHP int, inventory []string) Character {
+func initCharacter(name string, class string, level int, maxHP int, currentHP int, Initiative int, MaxMana int, Mana int, inventory []string) Character {
 	return Character{
 		Name:              name,
 		Class:             class,
 		Level:             level,
 		MaxHP:             maxHP,
 		HP:                currentHP,
+		MaxMana:           MaxMana,
+		Mana:              Mana,
+		Initiative:        Initiative,
 		Inventory:         inventory,
 		Skills:            []string{"Coup de poing"},
 		Gold:              100,
 		Equipment:         Equipment{Head: "", Torso: "", Feet: ""},
 		InventoryCapacity: 10,
 		UpgradeCount:      0,
+		XP:                0,
+		XPToNext:          50,
+	}
+}
+
+func (c *Character) gainXP(amount int) {
+	fmt.Printf("%s a gagné %d points d’expérience !\n", c.Name, amount)
+	c.XP += amount
+
+	for c.XP >= c.XPToNext {
+		c.XP -= c.XPToNext
+		c.Level++
+		c.MaxHP += 10
+		c.HP = c.MaxHP
+		c.XPToNext = int(float64(c.XPToNext) * 1.5)
+		fmt.Printf("✨ %s passe au niveau %d ! PV max +10 (%d PV)\n", c.Name, c.Level, c.MaxHP)
 	}
 }
 
@@ -164,30 +188,42 @@ func characterCreation(reader *bufio.Reader) Character {
 
 	var class string
 	var MaxHP, HP int
+	var MaxMana, Mana int
+	var Initiative int
 
 	switch classe {
 	case "1":
 		class = "Elfe"
 		MaxHP = 80
 		HP = 40
+		MaxMana = 100
+		Mana = 50
+		Initiative = 15
 	case "2":
 		class = "Humain"
 		MaxHP = 100
 		HP = 50
+		MaxMana = 80
+		Mana = 40
+		Initiative = 10
 	case "3":
 		class = "Nain"
 		MaxHP = 120
 		HP = 60
+		MaxMana = 70
+		Mana = 35
+		Initiative = 5
 	default:
 		fmt.Println("Choix invalide.")
 		fmt.Println("Classe par défaut : Humain")
 		class = "Humain"
 		MaxHP = 100
 		HP = 50
+		Initiative = 10
 	}
 
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
-	return initCharacter(name, class, 1, MaxHP, HP, initialInventory)
+	return initCharacter(name, class, 1, MaxHP, HP, MaxMana, Mana, Initiative, initialInventory)
 }
 
 func displayInfo(c *Character) {
@@ -196,6 +232,9 @@ func displayInfo(c *Character) {
 	fmt.Printf("Classe     : %s\n", c.Class)
 	fmt.Printf("Niveau     : %d\n", c.Level)
 	fmt.Printf("PV         : %d / %d\n", c.HP, c.MaxHP)
+	fmt.Printf("PV         : %d / %d\n", c.Mana, c.MaxMana)
+	fmt.Printf("XP         : %d / %d\n", c.XP, c.XPToNext)
+	fmt.Printf("Initiative : %d\n", c.Initiative)
 	fmt.Printf("Or         : %d\n", c.Gold)
 	fmt.Printf("Inventaire : %d/%d item(s)\n", len(c.Inventory), c.InventoryCapacity)
 
