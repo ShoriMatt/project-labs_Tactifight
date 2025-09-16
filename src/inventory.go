@@ -20,7 +20,7 @@ func addInventory(c *Character, item string) {
 
 func removeInventory(c *Character, item string) bool {
 	for i, v := range c.Inventory {
-		if v == item {
+		if strings.EqualFold(v, item) {
 			c.Inventory = append(c.Inventory[:i], c.Inventory[i+1:]...)
 			return true
 		}

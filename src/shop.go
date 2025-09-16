@@ -19,33 +19,32 @@ func marchand(c *Character, reader *bufio.Reader) {
 		"plume de corbeau",
 		"amélioration d'inventaire",
 	}
-
 	prix := []int{3, 6, 5, 25, 4, 7, 3, 1, 30}
 
 	for {
-		fmt.Println(` _, _  _, __,  _, _,_  _, _, _ __,
+		centerText(` _, _  _, __,  _, _,_  _, _, _ __,
  |\/| /_\ |_) / '` + ` |_| /_\ |\ | | \
  |  | | | | \ \ , | | | | | \| |_/
  ~  ~ ~ ~ ~ ~  ~  ~ ~ ~ ~ ~  ~ ~  
 								  `)
-		fmt.Printf("Vous avez %d or.\n", c.Gold)
+		centerText(fmt.Sprintf("Vous avez %d or.", c.Gold))
 		for i, item := range inventaire {
-			fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
+			centerText(fmt.Sprintf("%d. %s (%d or)", i+1, item, prix[i]))
 		}
-		fmt.Println("Tapez le numéro de l’objet à acheter, ou 'q' pour quitter.")
+		centerText("Tapez le numéro de l’objet à acheter, ou 'q' pour quitter.")
 		fmt.Print("Choix : ")
 
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
 
 		if strings.ToLower(choice) == "q" {
-			fmt.Println("Vous quittez le marchand.")
+			centerText("Vous quittez le marchand.")
 			return
 		}
 
 		idx, err := strconv.Atoi(choice)
 		if err != nil || idx < 1 || idx > len(inventaire) {
-			fmt.Println("Numéro invalide.")
+			centerText("Numéro invalide.")
 			continue
 		}
 
@@ -55,13 +54,12 @@ func marchand(c *Character, reader *bufio.Reader) {
 		if len(c.Inventory) >= c.InventoryCapacity &&
 			item != "amélioration d'inventaire" &&
 			item != "livre de sort : boule de feu" {
-			fmt.Printf("Inventaire plein ! Vous ne pouvez pas acheter cet objet (max %d).\n", c.InventoryCapacity)
+			centerText(fmt.Sprintf("Inventaire plein ! Vous ne pouvez pas acheter cet objet (max %d).", c.InventoryCapacity))
 			continue
 		}
 
 		if c.Gold < prixItem {
-			fmt.Printf("Pas assez d’or ! (%s coûte %d or, il vous manque %d)\n",
-				item, prixItem, prixItem-c.Gold)
+			centerText(fmt.Sprintf("Pas assez d’or ! (%s coûte %d or, il vous manque %d)", item, prixItem, prixItem-c.Gold))
 			continue
 		}
 
@@ -70,18 +68,16 @@ func marchand(c *Character, reader *bufio.Reader) {
 		switch item {
 		case "livre de sort : boule de feu":
 			spellBook(c)
-			fmt.Printf("Vous avez acheté et appris directement : %s (-%d or)\n", item, prixItem)
-
+			centerText(fmt.Sprintf("Vous avez acheté et appris directement : %s (-%d or)", item, prixItem))
 		case "amélioration d'inventaire":
 			c.upgradeInventorySlot()
-			fmt.Printf("Vous avez acheté et utilisé : %s (-%d or)\n", item, prixItem)
-
+			centerText(fmt.Sprintf("Vous avez acheté et utilisé : %s (-%d or)", item, prixItem))
 		default:
 			addInventory(c, item)
-			fmt.Printf("Vous avez acheté : %s (-%d or)\n", item, prixItem)
+			centerText(fmt.Sprintf("Vous avez acheté : %s (-%d or)", item, prixItem))
 		}
 
-		fmt.Printf("Or restant : %d\n", c.Gold)
+		centerText(fmt.Sprintf("Or restant : %d", c.Gold))
 	}
 }
 
@@ -92,17 +88,18 @@ func forgeron(c *Character, reader *bufio.Reader) {
 	MatériauxBottes := []string{"Fourrure de loup", "Cuir de Sanglier"}
 	prix := []int{10, 10, 10}
 
-	fmt.Println(`
+	centerText(`
  __,  _, __,  _, __, __,  _, _, _
  |_  / \ |_) / _ |_  |_) / \ |\ |
  |   \ / | \ \ / |   | \ \ / | \|
  ~    ~  ~ ~  ~  ~~~ ~ ~  ~  ~  ~
 								 `)
 	for i, item := range inventaire {
-		fmt.Printf("%d. %s (%d or)\n", i+1, item, prix[i])
+		centerText(fmt.Sprintf("%d. %s (%d or)", i+1, item, prix[i]))
 	}
-	fmt.Println("Voulez-vous fabriquer un item ? (o/n)")
+	centerText("Voulez-vous fabriquer un item ? (o/n)")
 	fmt.Print("Choix : ")
+
 	choice, _ := reader.ReadString('\n')
 	choice = strings.TrimSpace(choice)
 
@@ -112,7 +109,7 @@ func forgeron(c *Character, reader *bufio.Reader) {
 		numStr = strings.TrimSpace(numStr)
 		idx, err := strconv.Atoi(numStr)
 		if err != nil || idx < 1 || idx > len(inventaire) {
-			fmt.Println("Numéro invalide.")
+			centerText("Numéro invalide.")
 			return
 		}
 		item := inventaire[idx-1]
@@ -125,7 +122,7 @@ func forgeron(c *Character, reader *bufio.Reader) {
 		} else {
 			mat = MatériauxBottes
 		}
-		fmt.Println("Matériaux requis :", mat)
+		centerText(fmt.Sprintf("Matériaux requis : %v", mat))
 
 		for _, m := range mat {
 			found := false
@@ -136,7 +133,7 @@ func forgeron(c *Character, reader *bufio.Reader) {
 				}
 			}
 			if !found {
-				fmt.Printf("Il vous manque le matériau : %s\n", m)
+				centerText(fmt.Sprintf("Il vous manque le matériau : %s", m))
 				return
 			}
 		}
@@ -149,17 +146,17 @@ func forgeron(c *Character, reader *bufio.Reader) {
 			}
 		}
 		if len(c.Inventory) >= c.InventoryCapacity {
-			fmt.Println("Inventaire plein ! Vous ne pouvez pas fabriquer cet objet.")
+			centerText("Inventaire plein ! Vous ne pouvez pas fabriquer cet objet.")
 			return
 		}
 
 		if c.Gold < prixItem {
-			fmt.Println("Pas assez d'or !")
+			centerText("Pas assez d'or !")
 			return
 		}
 
 		c.Gold -= prixItem
 		addInventory(c, item)
-		fmt.Printf("Vous avez fabriqué : %s (-%d or)\n", item, prixItem)
+		centerText(fmt.Sprintf("Vous avez fabriqué : %s (-%d or)", item, prixItem))
 	}
 }

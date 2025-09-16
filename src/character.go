@@ -29,7 +29,7 @@ type Character struct {
 	UpgradeCount      int
 	XP                int
 	XPToNext          int
-	PoisonTurns       int 
+	PoisonTurns       int
 }
 
 func initCharacter(name string, class string, level int, maxHP int, currentHP int, Initiative int, MaxMana int, Mana int, inventory []string) Character {
@@ -56,7 +56,6 @@ func initCharacter(name string, class string, level int, maxHP int, currentHP in
 func (c *Character) gainXP(amount int) {
 	centerText(fmt.Sprintf("%s a gagné %d points d’expérience !", c.Name, amount))
 	c.XP += amount
-
 	for c.XP >= c.XPToNext {
 		c.XP -= c.XPToNext
 		c.Level++
@@ -68,16 +67,7 @@ func (c *Character) gainXP(amount int) {
 }
 
 func (c *Character) recalcMaxHP() {
-	baseHP := 0
-	switch c.Class {
-	case "Elfe":
-		baseHP = 80
-	case "Humain":
-		baseHP = 100
-	case "Nain":
-		baseHP = 120
-	}
-
+	baseHP := map[string]int{"Elfe": 80, "Humain": 100, "Nain": 120}[c.Class]
 	bonus := 0
 	if c.Equipment.Head == "Chapeau de l’aventurier" {
 		bonus += 10
@@ -88,7 +78,6 @@ func (c *Character) recalcMaxHP() {
 	if c.Equipment.Feet == "Bottes de l’aventurier" {
 		bonus += 15
 	}
-
 	c.MaxHP = baseHP + bonus
 	if c.HP > c.MaxHP {
 		c.HP = c.MaxHP
@@ -109,12 +98,10 @@ func (c *Character) equip(item string) {
 		centerText(fmt.Sprintf("Impossible d'équiper %s.", item))
 		return
 	}
-
 	if !removeInventory(c, itemLower) {
 		centerText("Objet non trouvé dans l'inventaire.")
 		return
 	}
-
 	switch slot {
 	case "Head":
 		if c.Equipment.Head != "" {
@@ -132,7 +119,6 @@ func (c *Character) equip(item string) {
 		}
 		c.Equipment.Feet = item
 	}
-
 	centerText(fmt.Sprintf("%s a été équipé.", item))
 	c.recalcMaxHP()
 }
@@ -160,17 +146,14 @@ func (c *Character) IsDead() bool {
 
 func characterCreation(reader *bufio.Reader) Character {
 	var name string
-
 	for {
 		fmt.Print("Entre ton nom (ou Entrée pour 'Joueur') : ")
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(input)
-
 		if input == "" {
 			name = "Joueur"
 			break
 		}
-
 		if IsAlpha(input) {
 			name = formatNom(input)
 			break
@@ -178,13 +161,11 @@ func characterCreation(reader *bufio.Reader) Character {
 			centerText("Erreur : le nom ne doit contenir que des lettres, espaces ou tirets.")
 		}
 	}
-
 	centerText("\nChoisis ta classe :")
 	centerText("1 - Elfe (80 PV max)")
 	centerText("2 - Humain (100 PV max)")
 	centerText("3 - Nain (120 PV max)")
 	fmt.Print("Choix > ")
-
 	classe, _ := reader.ReadString('\n')
 	classe = strings.TrimSpace(classe)
 
@@ -192,38 +173,16 @@ func characterCreation(reader *bufio.Reader) Character {
 	var MaxHP, HP int
 	var MaxMana, Mana int
 	var Initiative int
-
 	switch classe {
 	case "1":
-		class = "Elfe"
-		MaxHP = 80
-		HP = 40
-		MaxMana = 100
-		Mana = 50
-		Initiative = 15
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Elfe", 80, 40, 100, 50, 15
 	case "2":
-		class = "Humain"
-		MaxHP = 100
-		HP = 50
-		MaxMana = 80
-		Mana = 40
-		Initiative = 10
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Humain", 100, 50, 80, 40, 10
 	case "3":
-		class = "Nain"
-		MaxHP = 120
-		HP = 60
-		MaxMana = 70
-		Mana = 35
-		Initiative = 5
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Nain", 120, 60, 70, 35, 5
 	default:
-		centerText("Choix invalide.")
-		centerText("Classe par défaut : Humain")
-		class = "Humain"
-		MaxHP = 100
-		HP = 50
-		MaxMana = 80
-		Mana = 40
-		Initiative = 10
+		centerText("Choix invalide. Classe par défaut : Humain")
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Humain", 100, 50, 80, 40, 10
 	}
 
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
@@ -241,13 +200,11 @@ func displayInfo(c *Character) {
 	centerText(fmt.Sprintf("Initiative : %d", c.Initiative))
 	centerText(fmt.Sprintf("Or         : %d", c.Gold))
 	centerText(fmt.Sprintf("Inventaire : %d/%d item(s)", len(c.Inventory), c.InventoryCapacity))
-
 	if len(c.Inventory) > 0 {
 		for i, it := range c.Inventory {
 			centerText(fmt.Sprintf("  %d. %s", i+1, formatNom(it)))
 		}
 	}
-
 	if len(c.Skills) > 0 {
 		centerText("Sorts      : " + strings.Join(c.Skills, ", "))
 	}
