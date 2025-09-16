@@ -151,7 +151,12 @@ func accessInventory(c *Character, m *Monster, enCombat bool, reader *bufio.Read
 			c.equip(item)
 		}
 		if choice == "m" {
+			if enCombat {
+				centerText("Tu ne peux pas aller voir le marchand pendant un combat !")
+				continue
+			}
 			marchand(c, reader)
 		}
+
 	}
 }

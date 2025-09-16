@@ -3,13 +3,59 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
-func characterTurn(player *Character, monster *Monster, reader *bufio.Reader, turn int) {
+func useSpell(player *Character, monster *Monster, spell string) {
+	switch spell {
+	case "Coup de poing":
+		damage := 8
+		monster.HP -= damage
+		if monster.HP < 0 {
+			monster.HP = 0
+		}
+		centerText(fmt.Sprintf("%s utilise %s !", player.Name, spell))
+		centerText(fmt.Sprintf("Dégâts infligés : %d", damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", monster.Name, monster.HP, monster.MaxHP))
+
+	case "Boule de feu":
+		if player.Mana < 10 {
+			centerText("Pas assez de mana pour lancer Boule de feu !")
+			return
+		}
+		player.Mana -= 10
+		damage := 18
+		monster.HP -= damage
+		if monster.HP < 0 {
+			monster.HP = 0
+		}
+		centerText(fmt.Sprintf("%s lance %s !", player.Name, spell))
+		centerText(fmt.Sprintf("💥 Dégâts infligés : %d", damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", monster.Name, monster.HP, monster.MaxHP))
+
+	case "Soin":
+		heal := 15
+		oldHP := player.HP
+		player.HP += heal
+		if player.HP > player.MaxHP {
+			player.HP = player.MaxHP
+		}
+		centerText(fmt.Sprintf("%s lance Soin : PV %d -> %d/%d", player.Name, oldHP, player.HP, player.MaxHP))
+
+	default:
+		centerText("Sort inconnu.")
+	}
+}
+
+func characterTurn(player *Character, monster *Monster, reader *bufio.Reader, turn int) bool {
 	centerText("\n=== MENU DE COMBAT ===")
 	centerText("1. Attaquer")
 	centerText("2. Inventaire")
+	centerText("3. Sorts")
+	if turn >= 4 {
+		centerText("4. Fuir")
+	}
 	fmt.Print("Choix > ")
 
 	action, _ := reader.ReadString('\n')
@@ -29,9 +75,37 @@ func characterTurn(player *Character, monster *Monster, reader *bufio.Reader, tu
 	case "2": // Inventaire en combat
 		accessInventory(player, monster, true, reader)
 
+	case "3": // Sorts
+		if len(player.Skills) == 0 {
+			centerText("Aucun sort disponible.")
+			return false
+		}
+		centerText("=== Sorts disponibles ===")
+		for i, skill := range player.Skills {
+			centerText(fmt.Sprintf("%d. %s", i+1, skill))
+		}
+		fmt.Print("Choix > ")
+
+		choice, _ := reader.ReadString('\n')
+		choice = strings.TrimSpace(choice)
+		idx, err := strconv.Atoi(choice)
+		if err != nil || idx < 1 || idx > len(player.Skills) {
+			centerText("Choix invalide.")
+			return false
+		}
+		useSpell(player, monster, player.Skills[idx-1])
+
+	case "4":
+		if turn >= 4 {
+			centerText("🏃‍♂️ Vous prenez la fuite !")
+			return true // fuite réussie
+		}
+		centerText("Vous ne pouvez pas fuir avant le 4ème tour.")
+
 	default:
 		centerText("Choix invalide. Vous perdez votre tour.")
 	}
+	return false
 }
 
 func mainMenu(c *Character, reader *bufio.Reader) {
@@ -56,24 +130,33 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		switch choice {
 		case "1":
 			displayInfo(c)
+
 		case "2": // Inventaire hors combat
 			accessInventory(c, nil, false, reader)
+
 		case "3":
 			forgeron(c, reader)
-		case "4":
+
+		case "4": // Combat contre le gobelin
 			goblin := initGoblin()
 			centerText("\n--- Début du combat contre le Gobelin d’entraînement ---")
 
 			turn := 1
+			fuite := false
 			for goblin.HP > 0 && c.HP > 0 {
-				characterTurn(c, &goblin, reader, turn)
+				fuite = characterTurn(c, &goblin, reader, turn)
+				if fuite {
+					break // sortir du combat si fuite
+				}
 				if goblin.HP > 0 {
 					goblinPattern(&goblin, c, turn) // riposte du gobelin
 				}
 				turn++
 			}
 
-			if goblin.HP <= 0 {
+			if fuite {
+				centerText("Vous avez quitté le combat.")
+			} else if goblin.HP <= 0 {
 				centerText("🎉 Vous avez vaincu le gobelin !")
 				c.gainXP(goblin.XPReward)
 				c.Gold += goblin.GoldReward
@@ -235,6 +318,7 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		case "6":
 			centerText("Au revoir !")
 			return
+
 		case "poison":
 			centerText(`
 
