@@ -19,6 +19,8 @@ type Character struct {
 	MaxHP             int
 	HP                int
 	Initiative        int
+	MaxMana           int
+	Mana              int
 	Inventory         []string
 	Skills            []string
 	Gold              int
@@ -29,13 +31,15 @@ type Character struct {
 	XPToNext          int
 }
 
-func initCharacter(name string, class string, level int, maxHP int, currentHP int, Initiative int, inventory []string) Character {
+func initCharacter(name string, class string, level int, maxHP int, currentHP int, Initiative int, MaxMana int, Mana int, inventory []string) Character {
 	return Character{
 		Name:              name,
 		Class:             class,
 		Level:             level,
 		MaxHP:             maxHP,
 		HP:                currentHP,
+		MaxMana:           MaxMana,
+		Mana:              Mana,
 		Initiative:        Initiative,
 		Inventory:         inventory,
 		Skills:            []string{"Coup de poing"},
@@ -184,6 +188,7 @@ func characterCreation(reader *bufio.Reader) Character {
 
 	var class string
 	var MaxHP, HP int
+	var MaxMana, Mana int
 	var Initiative int
 
 	switch classe {
@@ -191,16 +196,22 @@ func characterCreation(reader *bufio.Reader) Character {
 		class = "Elfe"
 		MaxHP = 80
 		HP = 40
+		MaxMana = 100
+		Mana = 50
 		Initiative = 15
 	case "2":
 		class = "Humain"
 		MaxHP = 100
 		HP = 50
+		MaxMana = 80
+		Mana = 40
 		Initiative = 10
 	case "3":
 		class = "Nain"
 		MaxHP = 120
 		HP = 60
+		MaxMana = 70
+		Mana = 35
 		Initiative = 5
 	default:
 		fmt.Println("Choix invalide.")
@@ -212,7 +223,7 @@ func characterCreation(reader *bufio.Reader) Character {
 	}
 
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
-	return initCharacter(name, class, 1, MaxHP, HP, Initiative, initialInventory)
+	return initCharacter(name, class, 1, MaxHP, HP, MaxMana, Mana, Initiative, initialInventory)
 }
 
 func displayInfo(c *Character) {
@@ -221,6 +232,7 @@ func displayInfo(c *Character) {
 	fmt.Printf("Classe     : %s\n", c.Class)
 	fmt.Printf("Niveau     : %d\n", c.Level)
 	fmt.Printf("PV         : %d / %d\n", c.HP, c.MaxHP)
+	fmt.Printf("PV         : %d / %d\n", c.Mana, c.MaxMana)
 	fmt.Printf("XP         : %d / %d\n", c.XP, c.XPToNext)
 	fmt.Printf("Initiative : %d\n", c.Initiative)
 	fmt.Printf("Or         : %d\n", c.Gold)
