@@ -162,9 +162,9 @@ func characterCreation(reader *bufio.Reader) Character {
 		}
 	}
 	centerText("\nChoisis ta classe :")
-	centerText("1 - Elfe (80 PV max)")
-	centerText("2 - Humain (100 PV max)")
-	centerText("3 - Nain (120 PV max)")
+	centerText("1 - Assasin (80 PV max)")
+	centerText("2 - Gladiateur (100 PV max)")
+	centerText("3 - Tank (120 PV max)")
 	fmt.Print("Choix > ")
 	classe, _ := reader.ReadString('\n')
 	classe = strings.TrimSpace(classe)
@@ -175,14 +175,14 @@ func characterCreation(reader *bufio.Reader) Character {
 	var Initiative int
 	switch classe {
 	case "1":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Elfe", 80, 40, 100, 50, 15
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Assasin", 80, 40, 100, 50, 15
 	case "2":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Humain", 100, 50, 80, 40, 10
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Gladiateur", 100, 50, 80, 40, 10
 	case "3":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Nain", 120, 60, 70, 35, 5
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Tank", 120, 60, 70, 35, 5
 	default:
-		centerText("Choix invalide. Classe par défaut : Humain")
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Humain", 100, 50, 80, 40, 10
+		centerText("Choix invalide. Classe par défaut : Gladiateur")
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "gladiateur", 100, 50, 80, 40, 10
 	}
 
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
