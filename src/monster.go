@@ -25,22 +25,18 @@ func initGoblin() Monster {
 	}
 }
 
-func goblinPattern(goblin *Monster, player *Character, turns int) {
-	for turn := 1; turn <= turns; turn++ {
-		damage := goblin.AttackPts
-		if turn%3 == 0 {
-			damage *= 2
-		}
-		player.HP -= damage
-		if player.HP < 0 {
-			player.HP = 0
-		}
-		fmt.Printf("%s inflige à %s %d de dégâts\n", goblin.Name, player.Name, damage)
-		fmt.Printf("%s : %d/%d PV\n\n", player.Name, player.HP, player.MaxHP)
-		if player.IsDead() {
-			return
-		}
+func goblinPattern(goblin *Monster, player *Character, turn int) {
+	damage := goblin.AttackPts
+	if turn%3 == 0 {
+		damage *= 2
 	}
-	fmt.Printf("\n--- %s est vaincu ! ---\n", goblin.Name)
-	player.gainXP(goblin.XPReward)
+	player.HP -= damage
+	if player.HP < 0 {
+		player.HP = 0
+	}
+
+	centerText(fmt.Sprintf("%s inflige à %s %d de dégâts", goblin.Name, player.Name, damage))
+	centerText(fmt.Sprintf("%s : %d/%d PV", player.Name, player.HP, player.MaxHP))
+
+	player.IsDead()
 }
