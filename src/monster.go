@@ -25,11 +25,13 @@ func initGoblin() Monster {
 	}
 }
 
+// IA du gobelin : attaque chaque tour, et tous les 3 tours inflige le double
 func goblinPattern(goblin *Monster, player *Character, turn int) {
 	damage := goblin.AttackPts
 	if turn%3 == 0 {
 		damage *= 2
 	}
+
 	player.HP -= damage
 	if player.HP < 0 {
 		player.HP = 0

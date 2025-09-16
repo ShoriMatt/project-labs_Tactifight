@@ -10,12 +10,12 @@ import (
 
 func addInventory(c *Character, item string) {
 	if len(c.Inventory) >= c.InventoryCapacity {
-		fmt.Printf("Inventaire plein ! (max %d)\n", c.InventoryCapacity)
+		centerText(fmt.Sprintf("Inventaire plein ! (max %d)", c.InventoryCapacity))
 		return
 	}
 	item = strings.ToLower(item)
 	c.Inventory = append(c.Inventory, item)
-	fmt.Printf("%s a été ajouté à l'inventaire.\n", formatNom(item))
+	centerText(fmt.Sprintf("%s a été ajouté à l'inventaire.", formatNom(item)))
 }
 
 func removeInventory(c *Character, item string) bool {
@@ -37,7 +37,7 @@ func takePotion(c *Character) {
 		}
 	}
 	if found == -1 {
-		fmt.Println("Aucune potion de vie disponible.")
+		centerText("Aucune potion de vie disponible.")
 		return
 	}
 
@@ -49,18 +49,18 @@ func takePotion(c *Character) {
 	if c.HP > c.MaxHP {
 		c.HP = c.MaxHP
 	}
-	fmt.Printf("Tu as utilisé %s : PV %d -> %d / %d\n", potion, oldHP, c.HP, c.MaxHP)
+	centerText(fmt.Sprintf("Tu as utilisé %s : PV %d -> %d / %d", potion, oldHP, c.HP, c.MaxHP))
 }
 
 func poisonPot(c *Character) {
-	fmt.Println("Tu as utilisé une potion de poison !")
+	centerText("Tu as utilisé une potion de poison !")
 	for i := 1; i <= 3; i++ {
 		time.Sleep(1 * time.Second)
 		c.HP -= 10
 		if c.HP < 0 {
 			c.HP = 0
 		}
-		fmt.Printf("Dégâts de poison (%ds) : %d/%d PV\n", i, c.HP, c.MaxHP)
+		centerText(fmt.Sprintf("Dégâts de poison (%ds) : %d/%d PV", i, c.HP, c.MaxHP))
 		if c.IsDead() {
 			return
 		}
@@ -69,20 +69,21 @@ func poisonPot(c *Character) {
 
 func accessInventory(c *Character, reader *bufio.Reader) {
 	for {
-		fmt.Println("\nInventaire")
+		centerText("\nInventaire")
 		if len(c.Inventory) == 0 {
-			fmt.Println("(vide)")
+			centerText("(vide)")
 		} else {
 			for i, item := range c.Inventory {
-				fmt.Printf("%d. %s\n", i+1, item)
+				centerText(fmt.Sprintf("%d. %s", i+1, formatNom(item)))
 			}
 		}
-		fmt.Println("\nOptions :")
-		fmt.Println("u - Utiliser un objet")
-		fmt.Println("e - Équiper un objet")
-		fmt.Println("m - Aller voir le marchand")
-		fmt.Println("b - Retour")
+		centerText("\nOptions :")
+		centerText("u - Utiliser un objet")
+		centerText("e - Équiper un objet")
+		centerText("m - Aller voir le marchand")
+		centerText("b - Retour")
 		fmt.Print("Choix > ")
+
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
 
@@ -91,7 +92,7 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 		}
 		if choice == "u" {
 			if len(c.Inventory) == 0 {
-				fmt.Println("Aucun objet à utiliser.")
+				centerText("Aucun objet à utiliser.")
 				continue
 			}
 			fmt.Print("Numéro de l'objet à utiliser : ")
@@ -99,7 +100,7 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 			numStr = strings.TrimSpace(numStr)
 			idx, err := strconv.Atoi(numStr)
 			if err != nil || idx < 1 || idx > len(c.Inventory) {
-				fmt.Println("Numéro invalide.")
+				centerText("Numéro invalide.")
 				continue
 			}
 			item := c.Inventory[idx-1]
@@ -116,12 +117,12 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 				removeInventory(c, item)
 				c.upgradeInventorySlot()
 			} else {
-				fmt.Printf("L'utilisation de %s n'est pas encore implémentée.\n", item)
+				centerText(fmt.Sprintf("L'utilisation de %s n'est pas encore implémentée.", item))
 			}
 		}
 		if choice == "e" {
 			if len(c.Inventory) == 0 {
-				fmt.Println("Aucun objet à équiper.")
+				centerText("Aucun objet à équiper.")
 				continue
 			}
 			fmt.Print("Numéro de l'objet à équiper : ")
@@ -129,7 +130,7 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 			numStr = strings.TrimSpace(numStr)
 			idx, err := strconv.Atoi(numStr)
 			if err != nil || idx < 1 || idx > len(c.Inventory) {
-				fmt.Println("Numéro invalide.")
+				centerText("Numéro invalide.")
 				continue
 			}
 			item := c.Inventory[idx-1]
