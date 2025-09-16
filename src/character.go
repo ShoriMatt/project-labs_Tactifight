@@ -190,7 +190,8 @@ func characterCreation(reader *bufio.Reader) Character {
 }
 
 func displayInfo(c *Character) {
-	centerText("\nInformations du personnage")
+	centerText("\n===========================================")
+	centerText("Informations du personnage")
 	centerText(fmt.Sprintf("Nom        : %s", c.Name))
 	centerText(fmt.Sprintf("Classe     : %s", c.Class))
 	centerText(fmt.Sprintf("Niveau     : %d", c.Level))
@@ -210,5 +211,5 @@ func displayInfo(c *Character) {
 	}
 	centerText(fmt.Sprintf("Équipement : Tête [%s], Torse [%s], Pieds [%s]",
 		c.Equipment.Head, c.Equipment.Torso, c.Equipment.Feet))
-	centerText("=================================")
+	centerText("===========================================\n")
 }

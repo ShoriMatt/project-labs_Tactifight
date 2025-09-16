@@ -80,7 +80,8 @@ func poisonPot(c *Character, m *Monster, enCombat bool) {
 
 func accessInventory(c *Character, m *Monster, enCombat bool, reader *bufio.Reader) {
 	for {
-		centerText("\nInventaire")
+		centerText("\n===========================================")
+		centerText("Inventaire")
 		if len(c.Inventory) == 0 {
 			centerText("(vide)")
 		} else {
@@ -88,7 +89,8 @@ func accessInventory(c *Character, m *Monster, enCombat bool, reader *bufio.Read
 				centerText(fmt.Sprintf("%d. %s", i+1, formatNom(item)))
 			}
 		}
-		centerText("\nOptions :")
+		centerText("===========================================\n")
+		centerText("Options :")
 		centerText("u - Utiliser un objet")
 		centerText("e - Équiper un objet")
 		centerText("m - Aller voir le marchand")

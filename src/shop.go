@@ -27,11 +27,13 @@ func marchand(c *Character, reader *bufio.Reader) {
  |  | | | | \ \ , | | | | | \| |_/
  ~  ~ ~ ~ ~ ~  ~  ~ ~ ~ ~ ~  ~ ~  
 								  `)
+		centerText("\n===========================================")
 		centerText(fmt.Sprintf("Vous avez %d or.", c.Gold))
 		for i, item := range inventaire {
 			centerText(fmt.Sprintf("%d. %s (%d or)", i+1, item, prix[i]))
 		}
 		centerText("Tapez le numéro de l’objet à acheter, ou 'q' pour quitter.")
+		centerText("===========================================\n")
 		fmt.Print("Choix : ")
 
 		choice, _ := reader.ReadString('\n')
@@ -94,9 +96,11 @@ func forgeron(c *Character, reader *bufio.Reader) {
  |   \ / | \ \ / |   | \ \ / | \|
  ~    ~  ~ ~  ~  ~~~ ~ ~  ~  ~  ~
 								 `)
+	centerText("\n===========================================")
 	for i, item := range inventaire {
 		centerText(fmt.Sprintf("%d. %s (%d or)", i+1, item, prix[i]))
 	}
+	centerText("===========================================\n")
 	centerText("Voulez-vous fabriquer un item ? (o/n)")
 	fmt.Print("Choix : ")
 
