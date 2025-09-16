@@ -101,66 +101,73 @@ func forgeron(c *Character, reader *bufio.Reader) {
 		centerText(fmt.Sprintf("%d. %s (%d or)", i+1, item, prix[i]))
 	}
 	centerText("===========================================\n")
-	centerText("Voulez-vous fabriquer un item ? (o/n)")
+	centerText("Numéro de l'objet à fabriquer :")
+	centerText("ou apuyer sur q pour revenir.")
 	fmt.Print("Choix : ")
 
-	choice, _ := reader.ReadString('\n')
-	choice = strings.TrimSpace(choice)
+	numStr, _ := reader.ReadString('\n')
+	numStr = strings.TrimSpace(numStr)
 
-	if choice == "o" {
-		fmt.Print("Numéro de l'objet à fabriquer : ")
-		numStr, _ := reader.ReadString('\n')
-		numStr = strings.TrimSpace(numStr)
-		idx, err := strconv.Atoi(numStr)
-		if err != nil || idx < 1 || idx > len(inventaire) {
-			centerText("Numéro invalide.")
-			return
-		}
-		item := inventaire[idx-1]
-		prixItem := prix[idx-1]
-		var mat []string
-		if idx-1 == 0 {
-			mat = MatériauxChapeau
-		} else if idx-1 == 1 {
-			mat = MatériauxTunique
-		} else {
-			mat = MatériauxBottes
-		}
-		centerText(fmt.Sprintf("Matériaux requis : %v", mat))
-
-		for _, m := range mat {
-			found := false
-			for _, inv := range c.Inventory {
-				if strings.EqualFold(inv, m) {
-					found = true
-					break
-				}
-			}
-			if !found {
-				centerText(fmt.Sprintf("Il vous manque le matériau : %s", m))
-				return
-			}
-		}
-		for _, m := range mat {
-			for i, inv := range c.Inventory {
-				if strings.EqualFold(inv, m) {
-					c.Inventory = append(c.Inventory[:i], c.Inventory[i+1:]...)
-					break
-				}
-			}
-		}
-		if len(c.Inventory) >= c.InventoryCapacity {
-			centerText("Inventaire plein ! Vous ne pouvez pas fabriquer cet objet.")
-			return
-		}
-
-		if c.Gold < prixItem {
-			centerText("Pas assez d'or !")
-			return
-		}
-
-		c.Gold -= prixItem
-		addInventory(c, item)
-		centerText(fmt.Sprintf("Vous avez fabriqué : %s (-%d or)", item, prixItem))
+	if strings.ToLower(numStr) == "q" {
+		centerText("Vous quittez le forgeron.")
+		return
 	}
+
+	idx, err := strconv.Atoi(numStr)
+	if err != nil || idx < 1 || idx > len(inventaire) {
+		centerText("Numéro invalide.")
+		return
+	}
+	item := inventaire[idx-1]
+	prixItem := prix[idx-1]
+	var mat []string
+	if idx-1 == 0 {
+		mat = MatériauxChapeau
+	} else if idx-1 == 1 {
+		mat = MatériauxTunique
+	} else {
+		mat = MatériauxBottes
+	}
+	centerText(fmt.Sprintf("Matériaux requis : %v", mat))
+	centerText("voulez vous fabriquer cet objet ? (o/n)")
+	fmt.Print("Choix : ")
+	choix, _ := reader.ReadString('\n')
+	choix = strings.TrimSpace(choix)
+
+	if strings.ToLower(choix) != "o" {
+		centerText("Fabrication annulée.")
+		return
+	}
+	for _, m := range mat {
+		found := false
+		for _, inv := range c.Inventory {
+			if strings.EqualFold(inv, m) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			centerText(fmt.Sprintf("Il vous manque le matériau : %s", m))
+			return
+		}
+	}
+	for _, m := range mat {
+		for i, inv := range c.Inventory {
+			if strings.EqualFold(inv, m) {
+				c.Inventory = append(c.Inventory[:i], c.Inventory[i+1:]...)
+				break
+			}
+		}
+	}
+	if len(c.Inventory) >= c.InventoryCapacity {
+		centerText("Inventaire plein ! Vous ne pouvez pas fabriquer cet objet.")
+		return
+	}
+	if c.Gold < prixItem {
+		centerText("Pas assez d'or !")
+		return
+	}
+	c.Gold -= prixItem
+	addInventory(c, item)
+	centerText(fmt.Sprintf("Vous avez fabriqué : %s (-%d or)", item, prixItem))
 }
