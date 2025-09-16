@@ -26,8 +26,8 @@ func characterTurn(player *Character, monster *Monster, reader *bufio.Reader, tu
 		centerText(fmt.Sprintf("Dégâts infligés : %d", damage))
 		centerText(fmt.Sprintf("%s : %d/%d PV", monster.Name, monster.HP, monster.MaxHP))
 
-	case "2": // Inventaire
-		accessInventory(player, reader)
+	case "2": // Inventaire en combat
+		accessInventory(player, monster, true, reader)
 
 	default:
 		centerText("Choix invalide. Vous perdez votre tour.")
@@ -38,10 +38,10 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 	for {
 		centerText(`
  _, _ __, _, _ _,_   __, __, _ _, _  _, _ __,  _, _, 
- |\/| |_  |\ | | |   |_) |_) | |\ | / ` + "`" + ` | |_) /_\ |  
+ |\/| |_  |\ | | |   |_) |_) | |\ | / ' | |_) /_\ |  
  |  | |   | \| | |   |   | \ | | \| \ , | |   | | | ,
- ~  ~ ~~~ ~  ~ ` + "`~'" + `   ~   ~ ~ ~ ~  ~  ~  ~ ~   ~ ~ ~~~
-													 `)
+ ~  ~ ~~~ ~  ~ '~'   ~   ~ ~ ~ ~  ~  ~  ~ ~   ~ ~ ~~~
+		`)
 		centerText("1 - Afficher les informations du personnage")
 		centerText("2 - Accéder au contenu de l'inventaire")
 		centerText("3 - Voir le Forgeron")
@@ -56,8 +56,8 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		switch choice {
 		case "1":
 			displayInfo(c)
-		case "2":
-			accessInventory(c, reader)
+		case "2": // Inventaire hors combat
+			accessInventory(c, nil, false, reader)
 		case "3":
 			forgeron(c, reader)
 		case "4":

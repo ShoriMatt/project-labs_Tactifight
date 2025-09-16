@@ -52,22 +52,33 @@ func takePotion(c *Character) {
 	centerText(fmt.Sprintf("Tu as utilisé %s : PV %d -> %d / %d", potion, oldHP, c.HP, c.MaxHP))
 }
 
-func poisonPot(c *Character) {
-	centerText("Tu as utilisé une potion de poison !")
+// Potion de poison : utilisable seulement en combat, inflige des dégâts au monstre
+func poisonPot(c *Character, m *Monster, enCombat bool) {
+	if !enCombat {
+		centerText("Tu ne peux utiliser la potion de poison qu'en combat !")
+		return
+	}
+	if m == nil {
+		centerText("Aucun monstre à empoisonner.")
+		return
+	}
+
+	centerText("Tu as utilisé une potion de poison sur le monstre !")
 	for i := 1; i <= 3; i++ {
 		time.Sleep(1 * time.Second)
-		c.HP -= 10
-		if c.HP < 0 {
-			c.HP = 0
+		m.HP -= 10
+		if m.HP < 0 {
+			m.HP = 0
 		}
-		centerText(fmt.Sprintf("Dégâts de poison (%ds) : %d/%d PV", i, c.HP, c.MaxHP))
-		if c.IsDead() {
+		centerText(fmt.Sprintf("Le monstre subit des dégâts de poison (%ds) : %d/%d PV", i, m.HP, m.MaxHP))
+		if m.IsDead() {
+			centerText("Le monstre est mort à cause du poison !")
 			return
 		}
 	}
 }
 
-func accessInventory(c *Character, reader *bufio.Reader) {
+func accessInventory(c *Character, m *Monster, enCombat bool, reader *bufio.Reader) {
 	for {
 		centerText("\nInventaire")
 		if len(c.Inventory) == 0 {
@@ -107,9 +118,10 @@ func accessInventory(c *Character, reader *bufio.Reader) {
 
 			if strings.Contains(strings.ToLower(item), "potion de vie") {
 				takePotion(c)
+				removeInventory(c, item)
 			} else if strings.Contains(strings.ToLower(item), "potion de poison") {
 				removeInventory(c, item)
-				poisonPot(c)
+				poisonPot(c, m, enCombat)
 			} else if strings.Contains(strings.ToLower(item), "livre de sort : boule de feu") {
 				removeInventory(c, item)
 				spellBook(c)
