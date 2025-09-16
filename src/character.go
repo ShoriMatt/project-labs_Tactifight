@@ -18,6 +18,7 @@ type Character struct {
 	Level             int
 	MaxHP             int
 	HP                int
+	Initiative        int
 	Inventory         []string
 	Skills            []string
 	Gold              int
@@ -28,13 +29,14 @@ type Character struct {
 	XPToNext          int
 }
 
-func initCharacter(name string, class string, level int, maxHP int, currentHP int, inventory []string) Character {
+func initCharacter(name string, class string, level int, maxHP int, currentHP int, Initiative int, inventory []string) Character {
 	return Character{
 		Name:              name,
 		Class:             class,
 		Level:             level,
 		MaxHP:             maxHP,
 		HP:                currentHP,
+		Initiative:        Initiative,
 		Inventory:         inventory,
 		Skills:            []string{"Coup de poing"},
 		Gold:              100,
@@ -182,30 +184,35 @@ func characterCreation(reader *bufio.Reader) Character {
 
 	var class string
 	var MaxHP, HP int
+	var Initiative int
 
 	switch classe {
 	case "1":
 		class = "Elfe"
 		MaxHP = 80
 		HP = 40
+		Initiative = 15
 	case "2":
 		class = "Humain"
 		MaxHP = 100
 		HP = 50
+		Initiative = 10
 	case "3":
 		class = "Nain"
 		MaxHP = 120
 		HP = 60
+		Initiative = 5
 	default:
 		fmt.Println("Choix invalide.")
 		fmt.Println("Classe par défaut : Humain")
 		class = "Humain"
 		MaxHP = 100
 		HP = 50
+		Initiative = 10
 	}
 
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
-	return initCharacter(name, class, 1, MaxHP, HP, initialInventory)
+	return initCharacter(name, class, 1, MaxHP, HP, Initiative, initialInventory)
 }
 
 func displayInfo(c *Character) {
@@ -214,7 +221,11 @@ func displayInfo(c *Character) {
 	fmt.Printf("Classe     : %s\n", c.Class)
 	fmt.Printf("Niveau     : %d\n", c.Level)
 	fmt.Printf("PV         : %d / %d\n", c.HP, c.MaxHP)
+<<<<<<< HEAD
 	fmt.Printf("XP         : %d / %d\n", c.XP, c.XPToNext)
+=======
+	fmt.Printf("Initiative : %d\n", c.Initiative)
+>>>>>>> ff37773 (add initiative)
 	fmt.Printf("Or         : %d\n", c.Gold)
 	fmt.Printf("Inventaire : %d/%d item(s)\n", len(c.Inventory), c.InventoryCapacity)
 
