@@ -14,18 +14,14 @@ type Item struct {
 	Effect int    // quantité de PV rendus ou dégâts
 }
 
-// Structure d'un personnage
-type Character struct {
-	Name       string
-	HP         int
-	MaxHP      int
-	Damage     int
-	Inventory  []Item
-	PoisonTurns int // Nombre de tours restants sous poison
+// Base de données des objets disponibles
+var ItemsDB = map[string]Item{
+	"Potion de soin":   {Name: "Potion de soin", Type: "heal", Effect: 50},
+	"Potion de poison": {Name: "Potion de poison", Type: "poison", Effect: 30},
 }
 
 // Applique les dégâts du poison au début du tour si empoisonné
-func applyPoisonEffect(c *Character) {
+func ApplyPoisonEffect(c *Character) {
 	if c.PoisonTurns > 0 {
 		fmt.Printf("%s souffre du poison !\n", c.Name)
 		c.HP -= 10
@@ -41,12 +37,11 @@ func applyPoisonEffect(c *Character) {
 	}
 }
 
-// Fonction du tour du joueur
-func characterTurn(player *Character, enemy *Character) {
+// Tour du joueur (à appeler depuis main ou autre)
+func PlayerTurn(player *Character, enemy *Character) {
 	reader := bufio.NewReader(os.Stdin)
 
-	// Appliquer poison au début du tour du joueur
-	applyPoisonEffect(player)
+	ApplyPoisonEffect(player)
 	if player.HP == 0 {
 		return
 	}
@@ -72,7 +67,7 @@ func characterTurn(player *Character, enemy *Character) {
 			fmt.Printf("%s - PV : %d / %d\n", enemy.Name, enemy.HP, enemy.MaxHP)
 
 			if enemy.HP > 0 {
-				monsterTurn(enemy, player)
+				MonsterTurn(enemy, player)
 			} else {
 				fmt.Printf("%s est vaincu !\n", enemy.Name)
 			}
@@ -85,8 +80,8 @@ func characterTurn(player *Character, enemy *Character) {
 			}
 
 			fmt.Println("\n=== Inventaire ===")
-			for i, item := range player.Inventory {
-				fmt.Printf("%d. %s\n", i+1, item.Name)
+			for i, itemName := range player.Inventory {
+				fmt.Printf("%d. %s\n", i+1, itemName)
 			}
 			fmt.Print("Choisissez un objet à utiliser : ")
 			input, _ := reader.ReadString('\n')
@@ -99,7 +94,13 @@ func characterTurn(player *Character, enemy *Character) {
 				continue
 			}
 
-			chosenItem := player.Inventory[index-1]
+			chosenName := player.Inventory[index-1]
+			chosenItem, exists := ItemsDB[chosenName]
+			if !exists {
+				fmt.Println("Objet inconnu.")
+				continue
+			}
+
 			fmt.Printf("\nVous utilisez %s\n", chosenItem.Name)
 
 			switch chosenItem.Type {
@@ -112,7 +113,6 @@ func characterTurn(player *Character, enemy *Character) {
 				fmt.Printf("%s - PV : %d / %d\n", player.Name, player.HP, player.MaxHP)
 
 			case "poison":
-				// Appliquer l'état poison à l'ennemi
 				if enemy.PoisonTurns > 0 {
 					fmt.Printf("%s est déjà empoisonné.\n", enemy.Name)
 				} else {
@@ -127,9 +127,8 @@ func characterTurn(player *Character, enemy *Character) {
 			// Supprimer l'objet utilisé
 			player.Inventory = append(player.Inventory[:index-1], player.Inventory[index:]...)
 
-			// Tour du monstre
 			if enemy.HP > 0 {
-				monsterTurn(enemy, player)
+				MonsterTurn(enemy, player)
 			}
 			return
 
@@ -139,10 +138,9 @@ func characterTurn(player *Character, enemy *Character) {
 	}
 }
 
-// Tour du monstre
-func monsterTurn(monster *Character, player *Character) {
-	// Appliquer poison au début du tour du monstre
-	applyPoisonEffect(monster)
+// Tour du monstre (à appeler depuis main ou autre)
+func MonsterTurn(monster *Character, player *Character) {
+	ApplyPoisonEffect(monster)
 	if monster.HP == 0 {
 		return
 	}
@@ -161,31 +159,4 @@ func monsterTurn(monster *Character, player *Character) {
 	if player.HP == 0 {
 		fmt.Printf("%s est vaincu...\n", player.Name)
 	}
-}
-
-// Fonction principale
-func main() {
-	player := &Character{
-		Name:   "Héros",
-		HP:     20,
-		MaxHP:  20,
-		Damage: 5,
-		Inventory: []Item{
-			{Name: "Potion de soin", Type: "heal", Effect: 50},
-			{Name: "Potion de poison", Type: "poison", Effect: 0},
-		},
-	}
-
-	monster := &Character{
-		Name:   "Gobelin d'entraînement",
-		HP:     40,
-		MaxHP:  40,
-		Damage: 3,
-	}
-
-	for player.HP > 0 && monster.HP > 0 {
-		characterTurn(player, monster)
-	}
-
-	fmt.Println("\nCombat terminé.")
 }
