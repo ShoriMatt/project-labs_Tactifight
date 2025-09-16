@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 )
 
 type Monster struct {
@@ -10,6 +11,7 @@ type Monster struct {
 	MaxHP      int
 	XPReward   int
 	GoldReward int
+	Initiative int
 }
 
 func (m *Monster) IsDead() bool {
@@ -23,6 +25,7 @@ func initGoblin() Monster {
 		MaxHP:      30,
 		XPReward:   10,
 		GoldReward: 5,
+		Initiative: rand.Intn(100),
 	}
 }
 
