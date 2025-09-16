@@ -8,7 +8,12 @@ import (
 
 func mainMenu(c *Character, reader *bufio.Reader) {
 	for {
-		fmt.Println("\nMenu Principal")
+		fmt.Println(`
+ _, _ __, _, _ _,_   __, __, _ _, _  _, _ __,  _, _, 
+ |\/| |_  |\ | | |   |_) |_) | |\ | / ` + "`" + ` | |_) /_\ |  
+ |  | |   | \| | |   |   | \ | | \| \ , | |   | | | ,
+ ~  ~ ~~~ ~  ~ ` + "`~'" + `   ~   ~ ~ ~ ~  ~  ~  ~ ~   ~ ~ ~~~
+													 `)
 		fmt.Println("1 - Afficher les informations du personnage")
 		fmt.Println("2 - Accéder au contenu de l'inventaire")
 		fmt.Println("3 - Voir le Forgeron")
