@@ -24,6 +24,8 @@ type Character struct {
 	Equipment         Equipment
 	InventoryCapacity int
 	UpgradeCount      int
+	XP                int
+	XPToNext          int
 }
 
 func initCharacter(name string, class string, level int, maxHP int, currentHP int, inventory []string) Character {
@@ -39,6 +41,22 @@ func initCharacter(name string, class string, level int, maxHP int, currentHP in
 		Equipment:         Equipment{Head: "", Torso: "", Feet: ""},
 		InventoryCapacity: 10,
 		UpgradeCount:      0,
+		XP:                0,
+		XPToNext:          50,
+	}
+}
+
+func (c *Character) gainXP(amount int) {
+	fmt.Printf("%s a gagné %d points d’expérience !\n", c.Name, amount)
+	c.XP += amount
+
+	for c.XP >= c.XPToNext {
+		c.XP -= c.XPToNext
+		c.Level++
+		c.MaxHP += 10
+		c.HP = c.MaxHP
+		c.XPToNext = int(float64(c.XPToNext) * 1.5)
+		fmt.Printf("✨ %s passe au niveau %d ! PV max +10 (%d PV)\n", c.Name, c.Level, c.MaxHP)
 	}
 }
 
@@ -196,6 +214,7 @@ func displayInfo(c *Character) {
 	fmt.Printf("Classe     : %s\n", c.Class)
 	fmt.Printf("Niveau     : %d\n", c.Level)
 	fmt.Printf("PV         : %d / %d\n", c.HP, c.MaxHP)
+	fmt.Printf("XP         : %d / %d\n", c.XP, c.XPToNext)
 	fmt.Printf("Or         : %d\n", c.Gold)
 	fmt.Printf("Inventaire : %d/%d item(s)\n", len(c.Inventory), c.InventoryCapacity)
 
