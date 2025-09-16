@@ -6,36 +6,22 @@ import (
 )
 
 type Monster struct {
-<<<<<<< HEAD
-	Name      string
-	MaxHP     int
-	HP        int
-	AttackPts int
-	XPReward  int
-=======
 	Name       string
 	MaxHP      int
 	HP         int
 	AttackPts  int
+	XPReward   int
 	Initiative int
->>>>>>> ff37773 (add initiative)
 }
 
 func initGoblin() Monster {
 	return Monster{
-<<<<<<< HEAD
-		Name:      "Gobelin d'entraînement",
-		MaxHP:     40,
-		HP:        40,
-		AttackPts: 5,
-		XPReward:  20,
-=======
 		Name:       "Gobelin d'entraînement",
 		MaxHP:      40,
 		HP:         40,
 		AttackPts:  5,
+		XPReward:   20,
 		Initiative: rand.IntN(100),
->>>>>>> ff37773 (add initiative)
 	}
 }
 
