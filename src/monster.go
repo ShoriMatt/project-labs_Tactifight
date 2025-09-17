@@ -57,11 +57,17 @@ func initCloneBancalDeMacron() Monster {
 }
 
 func CloneBancalDeMacronPattern(clo *Monster, c *Character, turn int) {
+	Mob := *clo
 	random := rand.Intn(100)
-	if random < 30 && c.PoisonTurns == 0 {
-		c.PoisonTurns = 3
-		centerText(fmt.Sprintf("%s vous empoisonne pour 3 tours ! Avec l'attaque Crachat stellaire", clo.Name))
-		return
+	if random < 50 {
+		damage := 1
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s utilise discour infinie ! et vous fait sauter votre tour en vous infligeant %d dégâts", clo.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		CloneBancalDeMacronPattern(&Mob, c, turn)
 	}
 	damage := 4
 	c.HP -= damage
