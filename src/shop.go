@@ -70,7 +70,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 		switch item {
 		case "boule de feu":
 			spellBook(c)
-			centerText(fmt.Sprintf("Vous avez acheté et chargé directement : %s (-%d or)", item, prixItem))
+			centerText(fmt.Sprintf("Vous avez acheté et appris directement : %s (-%d or)", item, prixItem))
 		case "amélioration d'inventaire":
 			c.upgradeInventorySlot()
 			centerText(fmt.Sprintf("Vous avez acheté et utilisé : %s (-%d or)", item, prixItem))

@@ -47,12 +47,12 @@ func spellBook(c *Character) {
 	spell := "boule de feu"
 	for _, s := range c.Skills {
 		if s == spell {
-			centerText("Vous connaissez déjà ces munition " + spell + " !")
+			centerText("Vous connaissez déjà ce sort " + spell + " !")
 			return
 		}
 	}
 	c.Skills = append(c.Skills, spell)
-	centerText("Nouvelle munition acquise : " + spell)
+	centerText("Nouveau sort acquis : " + spell)
 }
 
 // Affiche du texte centré dans le terminal
