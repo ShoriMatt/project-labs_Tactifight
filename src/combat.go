@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math/rand"
 	"os"
 	"strings"
 )
@@ -18,6 +19,70 @@ type Item struct {
 var ItemsDB = map[string]Item{
 	"Potion de soin":   {Name: "Potion de soin", Type: "heal", Effect: 50},
 	"Potion de poison": {Name: "Potion de poison", Type: "poison", Effect: 30},
+}
+
+func patern(p int, c *Character, turn int, Mob Monster) {
+	// Exemple de fonction pour un pattern d'attaque
+	switch p {
+	case 1:
+		ChameauToxiqueLunairePattern(&Mob, c, turn)
+	case 2:
+		CloneBancalDeMacronPattern(&Mob, c, turn)
+	case 3:
+		GardePrésidentielSpatialPattern(&Mob, c, turn)
+	case 0:
+		EmmanuelMacroniusIVPattern(&Mob, c, turn)
+	default:
+		fmt.Println("Pattern inconnu")
+	}
+}
+func combat(c *Character, m *Character) {
+	Mob := initChameauToxiqueLunaire()
+	p := 1
+	fmt.Println("Un Chameau toxique lunaire apparaît !")
+	if c.etage == 20 {
+		Mob = initEmmanuelMacroniusIV()
+		p = 0
+		fmt.Println("Vous affrontez le boss final : Emmanuel Macronius IV !")
+	} else {
+		mobRand := rand.Intn(100)
+		if mobRand <= 45 {
+			Mob = initChameauToxiqueLunaire()
+			p = 1
+			fmt.Println("Un Chameau toxique lunaire apparaît !")
+		} else if mobRand <= 80 && mobRand > 45 {
+			Mob = initCloneBancalDeMacron()
+			p = 2
+			fmt.Println("Un Clone bancal de Macron apparaît !")
+		} else {
+			Mob = initGardePrésidentielSpatial()
+			p = 3
+			fmt.Println("Un Garde Présidentiel Spatial apparaît !")
+		}
+	}
+	turn := 1
+	fuite := false
+	for Mob.HP > 0 && c.HP > 0 {
+		fuite = characterTurn(c, &Mob, reader, turn)
+		if fuite {
+			break // sortir du combat si fuite
+		}
+		if Mob.HP > 0 {
+			patern(p, c, turn, Mob) // riposte du gobelin
+		}
+		turn++
+	}
+	if fuite {
+		centerText("Vous avez quitté le combat.")
+	} else if Mob.HP <= 0 {
+		centerText("🎉 Vous avez vaincu le gobelin !")
+		c.gainXP(Mob.XPReward)
+		c.Gold += Mob.GoldReward
+		centerText(fmt.Sprintf("💰 Vous obtenez %d or !", Mob.GoldReward))
+	} else if c.HP <= 0 {
+		centerText("💀 Vous avez été vaincu...")
+	}
+
 }
 
 // Applique les dégâts du poison au début du tour si empoisonné

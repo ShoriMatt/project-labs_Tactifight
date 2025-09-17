@@ -138,33 +138,7 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 			forgeron(c, reader)
 
 		case "4": // Combat contre le gobelin
-			goblin := initGoblin()
-			centerText("\n--- Début du combat contre le Gobelin d’entraînement ---")
-
-			turn := 1
-			fuite := false
-			for goblin.HP > 0 && c.HP > 0 {
-				fuite = characterTurn(c, &goblin, reader, turn)
-				if fuite {
-					break // sortir du combat si fuite
-				}
-				if goblin.HP > 0 {
-					goblinPattern(&goblin, c, turn) // riposte du gobelin
-				}
-				turn++
-			}
-
-			if fuite {
-				centerText("Vous avez quitté le combat.")
-			} else if goblin.HP <= 0 {
-				centerText("🎉 Vous avez vaincu le gobelin !")
-				c.gainXP(goblin.XPReward)
-				c.Gold += goblin.GoldReward
-				centerText(fmt.Sprintf("💰 Vous obtenez %d or !", goblin.GoldReward))
-			} else if c.HP <= 0 {
-				centerText("💀 Vous avez été vaincu...")
-			}
-
+			combat(c, m)
 		case "5":
 			centerText(`                                            _                                                                                                         
  ____ ____ ____ _________ ____ ____ ____ ____ ____ ____ ____ ____ _________ ____ ____ ____ ____ ____ ____ _________ ____ ____ ____ ____ _________ 

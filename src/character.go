@@ -30,6 +30,7 @@ type Character struct {
 	XP                int
 	XPToNext          int
 	PoisonTurns       int
+	etage             int
 }
 
 func initCharacter(name string, class string, level int, maxHP int, currentHP int, Initiative int, MaxMana int, Mana int, inventory []string) Character {
@@ -50,6 +51,7 @@ func initCharacter(name string, class string, level int, maxHP int, currentHP in
 		UpgradeCount:      0,
 		XP:                0,
 		XPToNext:          50,
+		etage:             1,
 	}
 }
 

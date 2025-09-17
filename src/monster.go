@@ -29,14 +29,14 @@ func initChameauToxiqueLunaire() Monster {
 	}
 }
 
-func ChameauToxiqueLunairePattern(g *Monster, c *Character, turn int) {
+func ChameauToxiqueLunairePattern(cha *Monster, c *Character, turn int) {
 	damage := 3
 	c.HP -= damage
 	if c.HP < 0 {
 		c.HP = 0
 	}
 
-	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", g.Name, damage))
+	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", cha.Name, damage))
 	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
 }
 func initCloneBancalDeMacron() Monster {
@@ -50,14 +50,14 @@ func initCloneBancalDeMacron() Monster {
 	}
 }
 
-func CloneBancalDeMacronPattern(g *Monster, c *Character, turn int) {
+func CloneBancalDeMacronPattern(clo *Monster, c *Character, turn int) {
 	damage := 3
 	c.HP -= damage
 	if c.HP < 0 {
 		c.HP = 0
 	}
 
-	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", g.Name, damage))
+	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", clo.Name, damage))
 	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
 }
 func initGardePrésidentielSpatial() Monster {
@@ -71,19 +71,19 @@ func initGardePrésidentielSpatial() Monster {
 	}
 }
 
-func GardePrésidentielSpatialPattern(g *Monster, c *Character, turn int) {
+func GardePrésidentielSpatialPattern(gar *Monster, c *Character, turn int) {
 	damage := 3
 	c.HP -= damage
 	if c.HP < 0 {
 		c.HP = 0
 	}
 
-	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", g.Name, damage))
+	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", gar.Name, damage))
 	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
 }
 func initEmmanuelMacroniusIV() Monster {
 	return Monster{
-		Name:       "Chameau toxique lunaire",
+		Name:       "Emmanuel Macronius IV",
 		HP:         30,
 		MaxHP:      30,
 		XPReward:   10,
@@ -92,13 +92,13 @@ func initEmmanuelMacroniusIV() Monster {
 	}
 }
 
-func EmmanuelMacroniusIVPattern(g *Monster, c *Character, turn int) {
+func EmmanuelMacroniusIVPattern(boss *Monster, c *Character, turn int) {
 	damage := 3
 	c.HP -= damage
 	if c.HP < 0 {
 		c.HP = 0
 	}
 
-	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", g.Name, damage))
+	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", boss.Name, damage))
 	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
 }
