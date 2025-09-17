@@ -103,9 +103,8 @@ func combat(c *Character) {
 		c.HP = c.MaxHP / 2
 		c.Mana = c.MaxMana / 2
 
-		fmt.Printf("✨ %s est ressuscité par une énergie cosmique !\n", c.Name)
-		fmt.Printf("Vous revenez avec %d/%d PV et %d/%d Mana.\n",
-			c.HP, c.MaxHP, c.Mana, c.MaxMana)
+		centerText(fmt.Sprintf("✨ %s est ressuscité par une énergie cosmique !\n", c.Name))
+		centerText(fmt.Sprintf("Vous revenez avec %d/%d PV et %d/%d Mana.\n", c.HP, c.MaxHP, c.Mana, c.MaxMana))
 
 		return
 	}
