@@ -7,6 +7,16 @@ import (
 	"unicode"
 
 	"golang.org/x/term"
+
+	// audio
+	"bytes"
+	"embed"
+	"log"
+	"time"
+
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/speaker"
+	"github.com/faiface/beep/wav"
 )
 
 func IsAlpha(s string) bool {
@@ -61,4 +71,34 @@ func centerText(text string) {
 		padding := (width - l) / 2
 		fmt.Printf("%s%s\n", strings.Repeat(" ", padding), line)
 	}
+}
+
+//
+// === Gestion des sons embarqués ===
+//
+
+//go:embed assets/*.wav
+var sounds embed.FS
+
+// Joue un son embarqué (nom = "select.wav")
+func playSound(name string) {
+	data, err := sounds.ReadFile("assets/" + name)
+	if err != nil {
+		log.Println("Son introuvable:", err)
+		return
+	}
+
+	streamer, format, err := wav.Decode(bytes.NewReader(data))
+	if err != nil {
+		log.Println("Erreur de décodage audio:", err)
+		return
+	}
+	defer streamer.Close()
+
+	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	done := make(chan bool)
+	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		done <- true
+	})))
+	<-done
 }
