@@ -17,8 +17,12 @@ type Item struct {
 
 // Base de données des objets disponibles
 var ItemsDB = map[string]Item{
-	"Potion de soin":   {Name: "Potion de soin", Type: "heal", Effect: 50},
-	"Potion de poison": {Name: "Potion de poison", Type: "poison", Effect: 30},
+	"potion de vie":                               {"potion de vie", "heal", 50},
+	"potion de mana":                              {"potion de mana", "mana", 30},
+	"potion de poison cosmique":                   {"potion de poison cosmique", "heal", 80},
+	"livre de sort : explosion de sable cosmique": {"livre de sort : explosion de sable cosmique", "spell", 0},
+	"sceptre-laser doré":                          {"sceptre-laser doré", "equip", 5},
+	"trône gravitationnel":                        {"trône gravitationnel", "artefact", 20},
 }
 
 func addInventory(c *Character, item string) {
