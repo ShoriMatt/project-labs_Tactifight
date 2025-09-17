@@ -97,7 +97,17 @@ func combat(c *Character) {
 		}
 
 	} else if c.HP <= 0 {
-		centerText("💀 Vous avez été vaincu...")
+		fmt.Printf("\n💀 %s est tombé au combat !\n", c.Name)
+
+		// Résurrection automatique
+		c.HP = c.MaxHP / 2
+		c.Mana = c.MaxMana / 2
+
+		fmt.Printf("✨ %s est ressuscité par une énergie cosmique !\n", c.Name)
+		fmt.Printf("Vous revenez avec %d/%d PV et %d/%d Mana.\n",
+			c.HP, c.MaxHP, c.Mana, c.MaxMana)
+
+		return
 	}
 }
 
