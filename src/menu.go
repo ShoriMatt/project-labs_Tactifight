@@ -3,69 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"strconv"
 	"strings"
 )
-
-func characterTurn(player *Character, monster *Monster, reader *bufio.Reader, turn int) bool {
-	centerText("\n=== MENU DE COMBAT ===")
-	centerText("1. Attaquer")
-	centerText("2. Inventaire")
-	centerText("3. Sorts")
-	if turn >= 4 {
-		centerText("4. Fuir")
-	}
-	fmt.Print("Choix > ")
-
-	action, _ := reader.ReadString('\n')
-	action = strings.TrimSpace(action)
-
-	switch action {
-	case "1": // Attaque basique
-		damage := 5
-		monster.HP -= damage
-		if monster.HP < 0 {
-			monster.HP = 0
-		}
-		centerText(fmt.Sprintf("%s utilise Attaque basique !", player.Name))
-		centerText(fmt.Sprintf("Dégâts infligés : %d", damage))
-		centerText(fmt.Sprintf("%s : %d/%d PV", monster.Name, monster.HP, monster.MaxHP))
-
-	case "2": // Inventaire en combat
-		accessInventory(player, monster, true, reader)
-
-	case "3": // Sorts
-		if len(player.Skills) == 0 {
-			centerText("Aucun sort disponible.")
-			return false
-		}
-		centerText("=== Sorts disponibles ===")
-		for i, skill := range player.Skills {
-			centerText(fmt.Sprintf("%d. %s", i+1, skill))
-		}
-		fmt.Print("Choix > ")
-
-		choice, _ := reader.ReadString('\n')
-		choice = strings.TrimSpace(choice)
-		idx, err := strconv.Atoi(choice)
-		if err != nil || idx < 1 || idx > len(player.Skills) {
-			centerText("Choix invalide.")
-			return false
-		}
-		useSpell(player, monster, player.Skills[idx-1])
-
-	case "4":
-		if turn >= 4 {
-			centerText("🏃‍♂️ Vous prenez la fuite !")
-			return true // fuite réussie
-		}
-		centerText("Vous ne pouvez pas fuir avant le 4ème tour.")
-
-	default:
-		centerText("Choix invalide. Vous perdez votre tour.")
-	}
-	return false
-}
 
 func mainMenu(c *Character, reader *bufio.Reader) {
 	for {
