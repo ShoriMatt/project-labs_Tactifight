@@ -30,6 +30,12 @@ func initChameauToxiqueLunaire() Monster {
 }
 
 func ChameauToxiqueLunairePattern(cha *Monster, c *Character, turn int) {
+	random := rand.Intn(100)
+	if random < 20 && c.PoisonTurns == 0 {
+		c.PoisonTurns = 3
+		centerText(fmt.Sprintf("%s vous empoisonne pour 3 tours ! Avec l'attaque Crachat stellaire", cha.Name))
+		return
+	}
 	damage := 3
 	c.HP -= damage
 	if c.HP < 0 {
@@ -51,6 +57,12 @@ func initCloneBancalDeMacron() Monster {
 }
 
 func CloneBancalDeMacronPattern(clo *Monster, c *Character, turn int) {
+	random := rand.Intn(100)
+	if random < 30 && c.PoisonTurns == 0 {
+		c.PoisonTurns = 3
+		centerText(fmt.Sprintf("%s vous empoisonne pour 3 tours ! Avec l'attaque Crachat stellaire", clo.Name))
+		return
+	}
 	damage := 4
 	c.HP -= damage
 	if c.HP < 0 {
@@ -72,6 +84,17 @@ func initGardePrésidentielSpatial() Monster {
 }
 
 func GardePrésidentielSpatialPattern(gar *Monster, c *Character, turn int) {
+	random := rand.Intn(100)
+	if random < 30 {
+		damage := 20
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s vous attaque avec son sceptre-laser ! et inflige %d dégâts !", gar.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	}
 	damage := 5
 	c.HP -= damage
 	if c.HP < 0 {

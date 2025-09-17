@@ -102,16 +102,16 @@ func combat(c *Character) {
 // Applique les dégâts du poison au début du tour si empoisonné
 func ApplyPoisonEffect(c *Character) {
 	if c.PoisonTurns > 0 {
-		fmt.Printf("%s souffre du poison !\n", c.Name)
+		centerText(fmt.Sprint("%s souffre du poison !\n", c.Name))
 		c.HP -= 10
 		if c.HP < 0 {
 			c.HP = 0
 		}
-		fmt.Printf("%s - PV : %d / %d\n", c.Name, c.HP, c.MaxHP)
+		centerText(fmt.Sprintf("%s - PV : %d / %d\n", c.Name, c.HP, c.MaxHP))
 		c.PoisonTurns--
 
 		if c.HP == 0 {
-			fmt.Printf("%s est vaincu par le poison !\n", c.Name)
+			centerText(fmt.Sprintf("%s est vaincu par le poison !\n", c.Name))
 		}
 	}
 }
