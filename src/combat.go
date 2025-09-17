@@ -67,6 +67,7 @@ func combat(c *Character) {
 		centerText("Vous avez quitté le combat.")
 	} else if Mob.IsDead() {
 		centerText("🎉 Vous avez vaincu le monstre !")
+		c.etage++
 		c.gainXP(Mob.XPReward)
 		c.Gold += Mob.GoldReward
 		centerText(fmt.Sprintf("💰 Vous obtenez %d or !", Mob.GoldReward))
