@@ -102,10 +102,10 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 	}
 
 	for {
-		fmt.Println("\n=== Menu ===")
-		fmt.Println("1. Attaquer")
-		fmt.Println("2. Inventaire")
-		fmt.Println("3. Fuir")
+		centerText("\n=== MENU DE COMBAT ===")
+		centerText("1. Attaquer")
+		centerText("2. Inventaire")
+		centerText("3. Fuir")
 		fmt.Print("Choisissez une option : ")
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
@@ -119,20 +119,20 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 				enemy.HP = 0
 			}
 
-			fmt.Printf("\n%s inflige %d dégâts à %s avec %s\n", player.Name, damage, enemy.Name, attackName)
-			fmt.Printf("%s - PV : %d / %d\n", enemy.Name, enemy.HP, enemy.MaxHP)
+			centerText(fmt.Sprintf("%s inflige %d dégâts à %s avec %s", player.Name, damage, enemy.Name, attackName))
+			centerText(fmt.Sprintf("%s - PV : %d / %d", enemy.Name, enemy.HP, enemy.MaxHP))
 
 			return false
 
 		case "2":
 			if len(player.Inventory) == 0 {
-				fmt.Println("Votre inventaire est vide.")
+				centerText("Votre inventaire est vide.")
 				continue
 			}
 
-			fmt.Println("\n=== Inventaire ===")
+			centerText("\n=== Inventaire ===")
 			for i, itemName := range player.Inventory {
-				fmt.Printf("%d. %s\n", i+1, itemName)
+				centerText(fmt.Sprintf("%d. %s", i+1, itemName))
 			}
 			fmt.Print("Choisissez un objet à utiliser : ")
 			input, _ := reader.ReadString('\n')
@@ -141,18 +141,18 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 			var index int
 			fmt.Sscanf(input, "%d", &index)
 			if index < 1 || index > len(player.Inventory) {
-				fmt.Println("Choix invalide.")
+				centerText("Choix invalide.")
 				continue
 			}
 
 			chosenName := player.Inventory[index-1]
 			chosenItem, exists := ItemsDB[chosenName]
 			if !exists {
-				fmt.Println("Objet inconnu.")
+				centerText("Objet inconnu.")
 				continue
 			}
 
-			fmt.Printf("\nVous utilisez %s\n", chosenItem.Name)
+			centerText(fmt.Sprintf("Vous utilisez %s", chosenItem.Name))
 
 			switch chosenItem.Type {
 			case "heal":
@@ -160,12 +160,12 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 				if player.HP > player.MaxHP {
 					player.HP = player.MaxHP
 				}
-				fmt.Printf("%s récupère %d PV.\n", player.Name, chosenItem.Effect)
-				fmt.Printf("%s - PV : %d / %d\n", player.Name, player.HP, player.MaxHP)
+				centerText(fmt.Sprintf("%s récupère %d PV.", player.Name, chosenItem.Effect))
+				centerText(fmt.Sprintf("%s - PV : %d / %d", player.Name, player.HP, player.MaxHP))
 
 			case "poison":
 				if enemy.HP > 0 {
-					fmt.Printf("%s est empoisonné pour 3 tours !\n", enemy.Name)
+					centerText(fmt.Sprintf("%s est empoisonné pour 3 tours !", enemy.Name))
 					enemy.HP -= chosenItem.Effect
 					if enemy.HP < 0 {
 						enemy.HP = 0
@@ -173,7 +173,7 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 				}
 
 			default:
-				fmt.Println("Type d'objet inconnu.")
+				centerText("Type d'objet inconnu.")
 			}
 
 			// Supprimer l'objet utilisé
@@ -182,11 +182,11 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 			return false
 
 		case "3":
-			fmt.Println("Vous prenez la fuite !")
+			centerText("Vous prenez la fuite !")
 			return true
 
 		default:
-			fmt.Println("Choix invalide. Réessayez.")
+			centerText("Choix invalide. Réessayez.")
 		}
 	}
 }
