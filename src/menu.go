@@ -137,11 +137,8 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		case "3":
 			forgeron(c, reader)
 
-<<<<<<< HEAD
 		case "4": // Combat contre le gobelin
-			combat(c, m)
-=======
->>>>>>> 4858969e462ebc30b1f355074ec943c84f34ddaa
+			combat(c)
 		case "5":
 			centerText(`                                            _                                                                                                         
  ____ ____ ____ _________ ____ ____ ____ ____ ____ ____ ____ ____ _________ ____ ____ ____ ____ ____ ____ _________ ____ ____ ____ ____ _________ 

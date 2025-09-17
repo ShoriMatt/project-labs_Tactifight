@@ -8,6 +8,19 @@ import (
 	"time"
 )
 
+// Structure d'un objet
+type Item struct {
+	Name   string
+	Type   string // ex: "heal", "poison"
+	Effect int    // quantité de PV rendus ou dégâts
+}
+
+// Base de données des objets disponibles
+var ItemsDB = map[string]Item{
+	"Potion de soin":   {Name: "Potion de soin", Type: "heal", Effect: 50},
+	"Potion de poison": {Name: "Potion de poison", Type: "poison", Effect: 30},
+}
+
 func addInventory(c *Character, item string) {
 	if len(c.Inventory) >= c.InventoryCapacity {
 		centerText(fmt.Sprintf("Inventaire plein ! (max %d)", c.InventoryCapacity))
@@ -152,11 +165,10 @@ func accessInventory(c *Character, m *Monster, enCombat bool, reader *bufio.Read
 		}
 		if choice == "m" {
 			if enCombat {
-				centerText("Tu ne peux pas aller voir le marchand pendant un combat !")
+				centerText("Impossible d'aller voir le marchand en plein combat !")
 				continue
 			}
 			marchand(c, reader)
 		}
-
 	}
 }
