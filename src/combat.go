@@ -34,6 +34,12 @@ var SpellDB = map[string]Spell{
 		Damage: -20, // négatif pour soin
 		Effect: "heal",
 	},
+	"Balle percante": {
+		Name:   "Balle percante",
+		Cost:   25,
+		Damage: 15,
+		Effect: "damage",
+	},
 }
 
 // Gère quel pattern d'attaque utiliser selon le monstre
@@ -168,7 +174,8 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 		centerText("\n=== MENU DE COMBAT ===")
 		centerText("1. Attaquer")
 		centerText("2. Inventaire")
-		centerText("3. Fuir")
+		centerText("3. Lancer un sort")
+		centerText("4. Fuir")
 		fmt.Print("Choisissez une option : ")
 		choice, _ := reader.ReadString('\n')
 		choice = strings.TrimSpace(choice)
