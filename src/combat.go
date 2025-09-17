@@ -34,8 +34,8 @@ var SpellDB = map[string]Spell{
 		Damage: -20, // négatif pour soin
 		Effect: "heal",
 	},
-	"Balle percante": {
-		Name:   "Balle percante",
+	"Boule de feu": {
+		Name:   "Boule de feu",
 		Cost:   25,
 		Damage: 15,
 		Effect: "damage",

@@ -12,14 +12,13 @@ func marchand(c *Character, reader *bufio.Reader) {
 		"potion de vie",
 		"potion de poison",
 		"potion de mana",
-		"boule de feu",
 		"circuit imprimé",
 		"peau de chameau",
 		"morceau de cuir",
 		"poil de chameau",
 		"amélioration d'inventaire",
 	}
-	prix := []int{3, 6, 5, 25, 4, 3, 7, 1, 30}
+	prix := []int{3, 6, 5, 4, 3, 7, 1, 30}
 
 	for {
 		centerText(` _, _  _, __,  _, _,_  _, _, _ __,
@@ -68,9 +67,6 @@ func marchand(c *Character, reader *bufio.Reader) {
 		c.Gold -= prixItem
 
 		switch item {
-		case "boule de feu":
-			spellBook(c)
-			centerText(fmt.Sprintf("Vous avez acheté et appris directement : %s (-%d or)", item, prixItem))
 		case "amélioration d'inventaire":
 			c.upgradeInventorySlot()
 			centerText(fmt.Sprintf("Vous avez acheté et utilisé : %s (-%d or)", item, prixItem))

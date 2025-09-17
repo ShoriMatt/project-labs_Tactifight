@@ -65,6 +65,14 @@ func (c *Character) gainXP(amount int) {
 		c.HP = c.MaxHP
 		c.XPToNext = int(float64(c.XPToNext) * 1.5)
 		centerText(fmt.Sprintf("✨ %s passe au niveau %d ! PV max +10 (%d PV)", c.Name, c.Level, c.MaxHP))
+
+		if c.Level == 2 {
+			spell := "Boule de feu"
+			if !contains(c.Skills, spell) {
+				c.Skills = append(c.Skills, spell)
+				centerText(fmt.Sprintf("📖 Nouveau sort appris : %s !", spell))
+			}
+		}
 	}
 }
 
