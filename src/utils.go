@@ -8,6 +8,9 @@ import (
 
 	"golang.org/x/term"
 
+	// audio
+	"bytes"
+	"embed"
 	"log"
 	"time"
 
@@ -70,15 +73,22 @@ func centerText(text string) {
 	}
 }
 
-func playSound(path string) {
-	f, err := os.Open(path)
+//
+// === Gestion des sons embarqués ===
+//
+
+//go:embed assets/*.wav
+var sounds embed.FS
+
+// Joue un son embarqué (nom = "select.wav")
+func playSound(name string) {
+	data, err := sounds.ReadFile("assets/" + name)
 	if err != nil {
-		log.Println("Impossible d’ouvrir le son:", err)
+		log.Println("Son introuvable:", err)
 		return
 	}
-	defer f.Close()
 
-	streamer, format, err := wav.Decode(f)
+	streamer, format, err := wav.Decode(bytes.NewReader(data))
 	if err != nil {
 		log.Println("Erreur de décodage audio:", err)
 		return

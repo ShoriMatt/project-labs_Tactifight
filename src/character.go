@@ -170,8 +170,7 @@ func characterCreation(reader *bufio.Reader) Character {
 	classe, _ := reader.ReadString('\n')
 	classe = strings.TrimSpace(classe)
 
-	// 🔊 jouer le son quand la classe est choisie
-	playSound("/home/matthias/projet-red_Tactifight/Docs/test.wav")
+	playSound("test.wav")
 
 	var class string
 	var MaxHP, HP int
