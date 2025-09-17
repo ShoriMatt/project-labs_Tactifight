@@ -8,6 +8,34 @@ import (
 	"strings"
 )
 
+type Spell struct {
+	Name   string
+	Cost   int
+	Damage int
+	Effect string // pour gérer des effets spéciaux plus tard (poison, heal, etc.)
+}
+
+var SpellDB = map[string]Spell{
+	"Explosion de sable cosmique": {
+		Name:   "Explosion de sable cosmique",
+		Cost:   10,
+		Damage: 20,
+		Effect: "damage",
+	},
+	"Éclair gravitationnel": {
+		Name:   "Éclair gravitationnel",
+		Cost:   15,
+		Damage: 30,
+		Effect: "damage",
+	},
+	"Soin stellaire": {
+		Name:   "Soin stellaire",
+		Cost:   12,
+		Damage: -20, // négatif pour soin
+		Effect: "heal",
+	},
+}
+
 // Gère quel pattern d'attaque utiliser selon le monstre
 func patern(p int, c *Character, turn int, mob *Monster) {
 	switch p {
@@ -97,7 +125,7 @@ func combat(c *Character) {
 		}
 
 	} else if c.HP <= 0 {
-		fmt.Printf("\n💀 %s est tombé au combat !\n", c.Name)
+		centerText(fmt.Sprintf("\n💀 %s est tombé au combat !\n", c.Name))
 
 		// Résurrection automatique
 		c.HP = c.MaxHP / 2
@@ -214,6 +242,71 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 			// Supprimer l'objet utilisé
 			player.Inventory = append(player.Inventory[:index-1], player.Inventory[index:]...)
 
+			return false
+
+		case "3":
+			// Lancer un sort
+			if len(player.Skills) == 0 {
+				centerText("Vous ne connaissez aucun sort.")
+				continue
+			}
+
+			centerText("\n=== Sorts disponibles ===")
+			for i, spell := range player.Skills {
+				if s, ok := SpellDB[spell]; ok {
+					centerText(fmt.Sprintf("%d. %s (Coût: %d mana, Effet: %s)", i+1, s.Name, s.Cost, s.Effect))
+				} else {
+					centerText(fmt.Sprintf("%d. %s (inconnu)", i+1, spell))
+				}
+			}
+
+			fmt.Print("Choisissez un sort : ")
+			input, _ := reader.ReadString('\n')
+			input = strings.TrimSpace(input)
+
+			var index int
+			fmt.Sscanf(input, "%d", &index)
+			if index < 1 || index > len(player.Skills) {
+				centerText("Choix invalide.")
+				continue
+			}
+
+			chosenSpell := player.Skills[index-1]
+			spell, exists := SpellDB[chosenSpell]
+			if !exists {
+				centerText("Ce sort est inconnu.")
+				continue
+			}
+
+			if player.Mana < spell.Cost {
+				centerText("Pas assez de mana !")
+				continue
+			}
+
+			player.Mana -= spell.Cost
+
+			switch spell.Effect {
+			case "damage":
+				enemy.HP -= spell.Damage
+				if enemy.HP < 0 {
+					enemy.HP = 0
+				}
+				centerText(fmt.Sprintf("%s lance %s et inflige %d dégâts à %s !", player.Name, spell.Name, spell.Damage, enemy.Name))
+				centerText(fmt.Sprintf("%s - PV : %d / %d", enemy.Name, enemy.HP, enemy.MaxHP))
+
+			case "heal":
+				player.HP -= spell.Damage // rappel : négatif → soin
+				if player.HP > player.MaxHP {
+					player.HP = player.MaxHP
+				}
+				centerText(fmt.Sprintf("%s lance %s et récupère %d PV !", player.Name, spell.Name, -spell.Damage))
+				centerText(fmt.Sprintf("%s - PV : %d / %d", player.Name, player.HP, player.MaxHP))
+
+			default:
+				centerText("L'effet du sort n'est pas encore implémenté.")
+			}
+
+			centerText(fmt.Sprintf("Mana restant : %d / %d", player.Mana, player.MaxMana))
 			return false
 
 		case "4":
