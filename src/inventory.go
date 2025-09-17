@@ -55,7 +55,6 @@ func takePotion(c *Character) {
 	}
 
 	potion := c.Inventory[found]
-	c.Inventory = append(c.Inventory[:found], c.Inventory[found+1:]...)
 
 	oldHP := c.HP
 	c.HP += 50
