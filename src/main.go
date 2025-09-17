@@ -91,5 +91,5 @@ _  /_/ /_  / /  __/  / / /_ |/ //  __/  / / / /_/ //  __/    _(__  )/ /_/ /_  / 
 		c = &char
 	}
 
-	mainMenu(player, reader)
+	mainMenu(c, reader)
 }
