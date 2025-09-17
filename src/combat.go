@@ -216,7 +216,7 @@ func PlayerTurn(player *Character, enemy *Monster) bool {
 
 			return false
 
-		case "3":
+		case "4":
 			centerText("Vous prenez la fuite !")
 			return true
 
