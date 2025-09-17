@@ -89,7 +89,7 @@ func forgeron(c *Character, reader *bufio.Reader) {
 	MatériauxTunique := []string{"Fourrure de loup", "Fourrure de loup", "Peau de Troll"}
 	MatériauxBottes := []string{"Fourrure de loup", "Cuir de Sanglier"}
 	MatériauxPotionPoison := []string{"Potion de poison", "bave de chameau mutant"}
-	prix := []int{10, 10, 10}
+	prix := []int{10, 10, 10, 15}
 
 	centerText(`
  __,  _, __,  _, __, __,  _, _, _
