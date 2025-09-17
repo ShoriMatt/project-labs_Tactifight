@@ -26,6 +26,11 @@ var ItemsDB = map[string]Item{
 	"trône gravitationnel":                        {"trône gravitationnel", "artefact", 20},
 }
 
+var SpellsDB = map[string]Item{
+	"balle perçante":              {"balle perçante", "spell", 6},
+	"explosion de sable cosmique": {"explosion de sable cosmique", "spell", 20},
+}
+
 // MonsterPoisonTurns tracks remaining poison turns per Monster pointer.
 // This avoids accessing a non-existent PoisonTurns field on the Monster struct.
 var MonsterPoisonTurns = make(map[*Monster]int)
