@@ -7,47 +7,6 @@ import (
 	"strings"
 )
 
-func useSpell(player *Character, monster *Monster, spell string) {
-	switch spell {
-	case "Coup de poing":
-		damage := 8
-		monster.HP -= damage
-		if monster.HP < 0 {
-			monster.HP = 0
-		}
-		centerText(fmt.Sprintf("%s utilise %s !", player.Name, spell))
-		centerText(fmt.Sprintf("Dégâts infligés : %d", damage))
-		centerText(fmt.Sprintf("%s : %d/%d PV", monster.Name, monster.HP, monster.MaxHP))
-
-	case "Boule de feu":
-		if player.Mana < 10 {
-			centerText("Pas assez de mana pour lancer Boule de feu !")
-			return
-		}
-		player.Mana -= 10
-		damage := 18
-		monster.HP -= damage
-		if monster.HP < 0 {
-			monster.HP = 0
-		}
-		centerText(fmt.Sprintf("%s lance %s !", player.Name, spell))
-		centerText(fmt.Sprintf("💥 Dégâts infligés : %d", damage))
-		centerText(fmt.Sprintf("%s : %d/%d PV", monster.Name, monster.HP, monster.MaxHP))
-
-	case "Soin":
-		heal := 15
-		oldHP := player.HP
-		player.HP += heal
-		if player.HP > player.MaxHP {
-			player.HP = player.MaxHP
-		}
-		centerText(fmt.Sprintf("%s lance Soin : PV %d -> %d/%d", player.Name, oldHP, player.HP, player.MaxHP))
-
-	default:
-		centerText("Sort inconnu.")
-	}
-}
-
 func characterTurn(player *Character, monster *Monster, reader *bufio.Reader, turn int) bool {
 	centerText("\n=== MENU DE COMBAT ===")
 	centerText("1. Attaquer")
