@@ -70,6 +70,30 @@ func combat(c *Character) {
 		c.gainXP(Mob.XPReward)
 		c.Gold += Mob.GoldReward
 		centerText(fmt.Sprintf("💰 Vous obtenez %d or !", Mob.GoldReward))
+		switch Mob.Name {
+		case "Chameau toxique lunaire":
+			addInventory(c, "potion de poison cosmique")
+			centerText("🎁 Vous obtenez une Potion de poison cosmique !")
+
+		case "Clone Bancal de Macron":
+			spell := "Explosion de sable cosmique"
+			if !contains(c.Skills, spell) {
+				c.Skills = append(c.Skills, spell)
+				centerText("📖 Nouveau sort appris : Explosion de sable cosmique !")
+			}
+
+		case "Garde Présidentiel Spatial":
+			addInventory(c, "sceptre-laser doré")
+			centerText("⚔️ Vous obtenez le Sceptre-laser doré !")
+
+		case "Emmanuel Macronius IV":
+			centerText("🎆 Vous avez récupéré votre liberté !")
+			addInventory(c, "trône gravitationnel")
+			centerText("👑 Artefact obtenu : Trône gravitationnel (PV max augmenté)")
+			c.MaxHP += 30
+			c.HP = c.MaxHP
+		}
+
 	} else if c.HP <= 0 {
 		centerText("💀 Vous avez été vaincu...")
 	}
