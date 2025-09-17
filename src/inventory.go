@@ -19,7 +19,8 @@ type Item struct {
 var ItemsDB = map[string]Item{
 	"potion de vie":                               {"potion de vie", "heal", 50},
 	"potion de mana":                              {"potion de mana", "mana", 30},
-	"potion de poison cosmique":                   {"potion de poison cosmique", "heal", 80},
+	"potion de poison":                            {"potion de poison", "poison", 10},
+	"potion de poison cosmique":                   {"potion de poison cosmique", "poison", 15},
 	"livre de sort : explosion de sable cosmique": {"livre de sort : explosion de sable cosmique", "spell", 0},
 	"sceptre-laser doré":                          {"sceptre-laser doré", "equip", 5},
 	"trône gravitationnel":                        {"trône gravitationnel", "artefact", 20},
