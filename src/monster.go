@@ -18,9 +18,9 @@ func (m *Monster) IsDead() bool {
 	return m.HP <= 0
 }
 
-func initGoblin() Monster {
+func initChameauToxiqueLunaire() Monster {
 	return Monster{
-		Name:       "Gobelin d'entraînement",
+		Name:       "Chameau toxique lunaire",
 		HP:         30,
 		MaxHP:      30,
 		XPReward:   10,
@@ -29,7 +29,70 @@ func initGoblin() Monster {
 	}
 }
 
-func goblinPattern(g *Monster, c *Character, turn int) {
+func ChameauToxiqueLunairePattern(g *Monster, c *Character, turn int) {
+	damage := 3
+	c.HP -= damage
+	if c.HP < 0 {
+		c.HP = 0
+	}
+
+	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", g.Name, damage))
+	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+}
+func initCloneBancalDeMacron() Monster {
+	return Monster{
+		Name:       "Chameau toxique lunaire",
+		HP:         30,
+		MaxHP:      30,
+		XPReward:   10,
+		GoldReward: 5,
+		Initiative: rand.Intn(100),
+	}
+}
+
+func CloneBancalDeMacronPattern(g *Monster, c *Character, turn int) {
+	damage := 3
+	c.HP -= damage
+	if c.HP < 0 {
+		c.HP = 0
+	}
+
+	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", g.Name, damage))
+	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+}
+func initGardePrésidentielSpatial() Monster {
+	return Monster{
+		Name:       "Chameau toxique lunaire",
+		HP:         30,
+		MaxHP:      30,
+		XPReward:   10,
+		GoldReward: 5,
+		Initiative: rand.Intn(100),
+	}
+}
+
+func GardePrésidentielSpatialPattern(g *Monster, c *Character, turn int) {
+	damage := 3
+	c.HP -= damage
+	if c.HP < 0 {
+		c.HP = 0
+	}
+
+	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", g.Name, damage))
+	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+}
+func initEmmanuelMacroniusIV() Monster {
+	return Monster{
+		Name:       "Chameau toxique lunaire",
+		HP:         30,
+		MaxHP:      30,
+		XPReward:   10,
+		GoldReward: 5,
+		Initiative: rand.Intn(100),
+	}
+}
+
+func EmmanuelMacroniusIVPattern(g *Monster, c *Character, turn int) {
 	damage := 3
 	c.HP -= damage
 	if c.HP < 0 {
