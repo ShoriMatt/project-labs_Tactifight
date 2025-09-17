@@ -79,7 +79,17 @@ _  /_/ /_  / /  __/  / / /_ |/ //  __/  / / / /_/ //  __/    _(__  )/ /_/ /_  / 
 			println()
 		}
 	}
-	player := characterCreation(reader)
 
-	mainMenu(&player, reader)
+	var c *Character
+	loaded, err := loadGame("save.json")
+	if err == nil {
+		centerText("✅ Sauvegarde trouvée, partie chargée !")
+		c = loaded
+	} else {
+		centerText("⚠️ Pas de sauvegarde, création d'un nouveau personnage.")
+		char := characterCreation(reader)
+		c = &char
+	}
+
+	mainMenu(player, reader)
 }
