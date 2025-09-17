@@ -11,8 +11,8 @@ func marchand(c *Character, reader *bufio.Reader) {
 	inventaire := []string{
 		"potion de vie",
 		"potion de poison",
-		"chargeur électrique",
-		"balle perçante",
+		"potion de mana",
+		"boule de feu",
 		"circuit imprimé",
 		"peau de chameau",
 		"morceau de cuir",
@@ -55,7 +55,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 
 		if len(c.Inventory) >= c.InventoryCapacity &&
 			item != "amélioration d'inventaire" &&
-			item != "balle perçante" {
+			item != "boule de feu" {
 			centerText(fmt.Sprintf("Inventaire plein ! Vous ne pouvez pas acheter cet objet (max %d).", c.InventoryCapacity))
 			continue
 		}
@@ -68,7 +68,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 		c.Gold -= prixItem
 
 		switch item {
-		case "balle perçante":
+		case "boule de feu":
 			spellBook(c)
 			centerText(fmt.Sprintf("Vous avez acheté et chargé directement : %s (-%d or)", item, prixItem))
 		case "amélioration d'inventaire":

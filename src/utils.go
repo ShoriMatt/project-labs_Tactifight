@@ -44,7 +44,7 @@ func formatNom(nom string) string {
 }
 
 func spellBook(c *Character) {
-	spell := "balle perçante"
+	spell := "boule de feu"
 	for _, s := range c.Skills {
 		if s == spell {
 			centerText("Vous connaissez déjà ces munition " + spell + " !")
