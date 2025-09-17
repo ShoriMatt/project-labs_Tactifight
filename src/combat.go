@@ -34,6 +34,12 @@ var SpellDB = map[string]Spell{
 		Damage: -20, // négatif pour soin
 		Effect: "heal",
 	},
+	"Balle percante": {
+		Name:   "Balle percante",
+		Cost:   25,
+		Damage: 15,
+		Effect: "damage",
+	},
 }
 
 // Gère quel pattern d'attaque utiliser selon le monstre
