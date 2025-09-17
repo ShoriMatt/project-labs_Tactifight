@@ -26,6 +26,93 @@ var ItemsDB = map[string]Item{
 	"trône gravitationnel":                        {"trône gravitationnel", "artefact", 20},
 }
 
+// MonsterPoisonTurns tracks remaining poison turns per Monster pointer.
+// This avoids accessing a non-existent PoisonTurns field on the Monster struct.
+var MonsterPoisonTurns = make(map[*Monster]int)
+
+// AttackBonuses tracks permanent attack bonuses per character pointer.
+// Some Character implementations may not have an AttackBonus field, so keep bonuses here.
+var AttackBonuses = make(map[*Character]int)
+
+func useItem(c *Character, mob *Monster, reader *bufio.Reader) {
+	if len(c.Inventory) == 0 {
+		fmt.Println("Votre inventaire est vide.")
+		return
+	}
+
+	fmt.Println("Inventaire :")
+	for i, item := range c.Inventory {
+		fmt.Printf("%d - %s\n", i+1, item)
+	}
+	fmt.Print("Choix > ")
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+
+	if input == "" {
+		fmt.Println("Action annulée.")
+		return
+	}
+
+	idx := int(input[0]-'0') - 1
+	if idx < 0 || idx >= len(c.Inventory) {
+		fmt.Println("Choix invalide.")
+		return
+	}
+
+	itemName := strings.ToLower(c.Inventory[idx])
+	item, exists := ItemsDB[itemName]
+	if !exists {
+		fmt.Println("Objet inconnu.")
+		return
+	}
+
+	switch item.Type {
+	case "heal":
+		old := c.HP
+		c.HP += item.Effect
+		if c.HP > c.MaxHP {
+			c.HP = c.MaxHP
+		}
+		fmt.Printf("Vous utilisez %s et récupérez %d PV (%d/%d).\n", item.Name, c.HP-old, c.HP, c.MaxHP)
+
+	case "mana":
+		old := c.Mana
+		c.Mana += item.Effect
+		if c.Mana > c.MaxMana {
+			c.Mana = c.MaxMana
+		}
+		fmt.Printf("Vous utilisez %s et récupérez %d Mana (%d/%d).\n", item.Name, c.Mana-old, c.Mana, c.MaxMana)
+
+	case "poison":
+		if mob != nil {
+			MonsterPoisonTurns[mob] = item.Effect
+			fmt.Printf("☠️ Vous utilisez %s ! %s est empoisonné (%d tours).\n", item.Name, mob.Name, item.Effect)
+		}
+
+	case "spell":
+		if item.Name == "livre de sort : explosion de sable cosmique" {
+			if !contains(c.Skills, "Explosion de sable cosmique") {
+				c.Skills = append(c.Skills, "Explosion de sable cosmique")
+				centerText("Nouvelle compétence apprise : Explosion de sable cosmique !")
+			}
+		}
+
+	case "equip":
+		if item.Name == "sceptre-laser doré" {
+			AttackBonuses[c] += item.Effect
+			fmt.Printf("+%d dégâts permanents grâce au Sceptre-laser doré (bonus total: +%d).\n", item.Effect, AttackBonuses[c])
+		}
+
+	case "artefact":
+		if item.Name == "trône gravitationnel" {
+			c.MaxHP += item.Effect
+			fmt.Printf("Votre PV max augmente de %d grâce au Trône gravitationnel !\n", item.Effect)
+		}
+	}
+
+	removeInventory(c, c.Inventory[idx])
+}
+
 func addInventory(c *Character, item string) {
 	if len(c.Inventory) >= c.InventoryCapacity {
 		centerText(fmt.Sprintf("Inventaire plein ! (max %d)", c.InventoryCapacity))
