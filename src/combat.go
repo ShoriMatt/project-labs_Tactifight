@@ -68,6 +68,7 @@ func combat(c *Character) {
 	} else if Mob.IsDead() {
 		centerText("🎉 Vous avez vaincu le monstre !")
 		c.etage++
+		centerText(fmt.Sprintf("Vous montez à l'étage %d", c.etage))
 		c.gainXP(Mob.XPReward)
 		c.Gold += Mob.GoldReward
 		centerText(fmt.Sprintf("💰 Vous obtenez %d or !", Mob.GoldReward))
@@ -103,7 +104,7 @@ func combat(c *Character) {
 // Applique les dégâts du poison au début du tour si empoisonné
 func ApplyPoisonEffect(c *Character) {
 	if c.PoisonTurns > 0 {
-		centerText(fmt.Sprint("%s souffre du poison !\n", c.Name))
+		centerText(fmt.Sprintf("%s souffre du poison !\n", c.Name))
 		c.HP -= 10
 		if c.HP < 0 {
 			c.HP = 0
