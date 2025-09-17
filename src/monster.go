@@ -122,6 +122,35 @@ func initEmmanuelMacroniusIV() Monster {
 }
 
 func EmmanuelMacroniusIVPattern(boss *Monster, c *Character, turn int) {
+	random := rand.Intn(100)
+	if random < 30 {
+		damage := 30
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s vous attaque avec son armés ! et inflige %d dégâts !", boss.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 60 {
+		damage := 50
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s utilise 49.3 ! et inflige %d dégâts !", boss.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 80 {
+		damage := 40
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s utilise la réforme des retraites ! et inflige %d dégâts !", boss.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	}
 	damage := 8
 	c.HP -= damage
 	if c.HP < 0 {
