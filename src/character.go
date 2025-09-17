@@ -71,13 +71,13 @@ func (c *Character) gainXP(amount int) {
 func (c *Character) recalcMaxHP() {
 	baseHP := map[string]int{"Assasin": 80, "Sentinelle": 100, "Tank": 120}[c.Class]
 	bonus := 0
-	if c.Equipment.Head == "Chapeau de rebelle" {
+	if c.Equipment.Head == "chapeau de rebelle" {
 		bonus += 10
 	}
-	if c.Equipment.Torso == "Tunique de rebelle" {
+	if c.Equipment.Torso == "tunique de rebelle" {
 		bonus += 25
 	}
-	if c.Equipment.Feet == "Bottes de rebelle" {
+	if c.Equipment.Feet == "bottes de rebelle" {
 		bonus += 15
 	}
 	c.MaxHP = baseHP + bonus

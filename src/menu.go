@@ -119,7 +119,7 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		centerText("1 - Afficher les informations du personnage")
 		centerText("2 - Accéder au contenu de l'inventaire")
 		centerText("3 - Voir le Forgeron")
-		centerText("4 - Combattre le Gobelin d'entraînement")
+		centerText("4 - Combattre dans l'arène")
 		centerText("5 - Qui sont-ils ?")
 		centerText("6 - Quitter")
 		fmt.Print("Choix > ")

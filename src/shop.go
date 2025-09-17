@@ -84,7 +84,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 }
 
 func forgeron(c *Character, reader *bufio.Reader) {
-	inventaire := []string{"Chapeau de rebelle", "Tunique de rebelle", "Bottes de rebelle", "potion de poison cosmique"}
+	inventaire := []string{"Chapeau De Rebelle", "Tunique De Rebelle", "Bottes De Rebelle", "potion de poison cosmique"}
 	MatériauxChapeau := []string{"poil de chameau", "morceau de cuir"}
 	MatériauxTunique := []string{"peau de chameau", "peau de chameau", "circuit imprimé"}
 	MatériauxBottes := []string{"peau de chameau", "morceau de cuir"}
