@@ -11,7 +11,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 	inventaire := []string{
 		"potion de vie",
 		"potion de poison",
-		"potion de mana",
+		"chargeur électrique",
 		"balle perçante",
 		"circuit imprimé",
 		"peau de chameau",
@@ -19,7 +19,7 @@ func marchand(c *Character, reader *bufio.Reader) {
 		"poil de chameau",
 		"amélioration d'inventaire",
 	}
-	prix := []int{3, 6, 5, 25, 4, 7, 3, 1, 30}
+	prix := []int{3, 6, 5, 25, 4, 3, 7, 1, 30}
 
 	for {
 		centerText(` _, _  _, __,  _, _,_  _, _, _ __,
@@ -84,10 +84,10 @@ func marchand(c *Character, reader *bufio.Reader) {
 }
 
 func forgeron(c *Character, reader *bufio.Reader) {
-	inventaire := []string{"Chapeau de rebel", "Tunique de rebel", "Bottes de rebel", "potion de poison cosmique"}
-	MatériauxChapeau := []string{"Plume de Corbeau", "Cuir de Sanglier"}
-	MatériauxTunique := []string{"Fourrure de loup", "Fourrure de loup", "Peau de Troll"}
-	MatériauxBottes := []string{"Fourrure de loup", "Cuir de Sanglier"}
+	inventaire := []string{"Chapeau de rebelle", "Tunique de rebelle", "Bottes de rebelle", "potion de poison cosmique"}
+	MatériauxChapeau := []string{"poil de chameau", "morceau de cuir"}
+	MatériauxTunique := []string{"peau de chameau", "peau de chameau", "circuit imprimé"}
+	MatériauxBottes := []string{"peau de chameau", "morceau de cuir"}
 	MatériauxPotionPoison := []string{"Potion de poison", "bave de chameau mutant"}
 	prix := []int{10, 10, 10, 15}
 

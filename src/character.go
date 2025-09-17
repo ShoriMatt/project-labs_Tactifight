@@ -67,15 +67,15 @@ func (c *Character) gainXP(amount int) {
 }
 
 func (c *Character) recalcMaxHP() {
-	baseHP := map[string]int{"Elfe": 80, "Humain": 100, "Nain": 120}[c.Class]
+	baseHP := map[string]int{"Assasin": 80, "Sentinelle": 100, "Tank": 120}[c.Class]
 	bonus := 0
-	if c.Equipment.Head == "Chapeau de l’aventurier" {
+	if c.Equipment.Head == "Chapeau de rebelle" {
 		bonus += 10
 	}
-	if c.Equipment.Torso == "Tunique de l’aventurier" {
+	if c.Equipment.Torso == "Tunique de rebelle" {
 		bonus += 25
 	}
-	if c.Equipment.Feet == "Bottes de l’aventurier" {
+	if c.Equipment.Feet == "Bottes de rebelle" {
 		bonus += 15
 	}
 	c.MaxHP = baseHP + bonus
@@ -88,11 +88,11 @@ func (c *Character) equip(item string) {
 	itemLower := strings.ToLower(item)
 	slot := ""
 	switch itemLower {
-	case "chapeau de l’aventurier":
+	case "chapeau de rebelle":
 		slot = "Head"
-	case "tunique de l’aventurier":
+	case "tunique de rebelle":
 		slot = "Torso"
-	case "bottes de l’aventurier":
+	case "bottes de rebelle":
 		slot = "Feet"
 	default:
 		centerText(fmt.Sprintf("Impossible d'équiper %s.", item))

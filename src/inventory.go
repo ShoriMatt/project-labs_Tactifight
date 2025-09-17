@@ -124,7 +124,7 @@ func accessInventory(c *Character, m *Monster, enCombat bool, reader *bufio.Read
 			} else if strings.Contains(strings.ToLower(item), "potion de poison") {
 				removeInventory(c, item)
 				poisonPot(c, m, enCombat)
-			} else if strings.Contains(strings.ToLower(item), "livre de sort : boule de feu") {
+			} else if strings.Contains(strings.ToLower(item), "balle perçante") {
 				removeInventory(c, item)
 				spellBook(c)
 			} else if strings.Contains(strings.ToLower(item), "amélioration d'inventaire") {

@@ -34,15 +34,15 @@ func formatNom(nom string) string {
 }
 
 func spellBook(c *Character) {
-	spell := "Boule de feu"
+	spell := "balle perçante"
 	for _, s := range c.Skills {
 		if s == spell {
-			centerText("Vous connaissez déjà le sort " + spell + " !")
+			centerText("Vous connaissez déjà ces munition " + spell + " !")
 			return
 		}
 	}
 	c.Skills = append(c.Skills, spell)
-	centerText("Nouveau sort appris : " + spell)
+	centerText("Nouvelle munition acquise : " + spell)
 }
 
 // Affiche du texte centré dans le terminal
