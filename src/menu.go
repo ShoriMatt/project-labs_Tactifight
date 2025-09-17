@@ -19,7 +19,8 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 		centerText("3 - Voir le Forgeron")
 		centerText("4 - Combattre dans l'arène")
 		centerText("5 - Qui sont-ils ?")
-		centerText("6 - Quitter")
+		centerText("6 - Sauvegarder la partie") // <-- AJOUT
+		centerText("7 - Quitter")
 		fmt.Print("Choix > ")
 
 		choice, _ := reader.ReadString('\n')
@@ -187,9 +188,16 @@ func mainMenu(c *Character, reader *bufio.Reader) {
 @@@@@@@@@@@@@@%%%%%@@@@@@@+====-------------=--==-=-----------------===#@@%%@@@@@@@@@@@@@@@@@@%
 
 `)
-		case "6":
+		case "7":
 			centerText("Au revoir !")
 			return
+
+		case "6":
+			if err := saveGame(c, "save.json"); err != nil {
+				centerText("❌ Erreur lors de la sauvegarde")
+			} else {
+				centerText("💾 Partie sauvegardée avec succès !")
+			}
 
 		case "poison":
 			centerText(`
