@@ -7,6 +7,13 @@ import (
 	"unicode"
 
 	"golang.org/x/term"
+
+	"log"
+	"time"
+
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/speaker"
+	"github.com/faiface/beep/wav"
 )
 
 func IsAlpha(s string) bool {
@@ -61,4 +68,27 @@ func centerText(text string) {
 		padding := (width - l) / 2
 		fmt.Printf("%s%s\n", strings.Repeat(" ", padding), line)
 	}
+}
+
+func playSound(path string) {
+	f, err := os.Open(path)
+	if err != nil {
+		log.Println("Impossible d’ouvrir le son:", err)
+		return
+	}
+	defer f.Close()
+
+	streamer, format, err := wav.Decode(f)
+	if err != nil {
+		log.Println("Erreur de décodage audio:", err)
+		return
+	}
+	defer streamer.Close()
+
+	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	done := make(chan bool)
+	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		done <- true
+	})))
+	<-done
 }

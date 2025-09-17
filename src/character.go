@@ -161,6 +161,7 @@ func characterCreation(reader *bufio.Reader) Character {
 			centerText("Erreur : le nom ne doit contenir que des lettres, espaces ou tirets.")
 		}
 	}
+
 	centerText("\nChoisis ta classe :")
 	centerText("1 - Assasin (80 PV max)")
 	centerText("2 - Sentinelle (100 PV max)")
@@ -168,6 +169,9 @@ func characterCreation(reader *bufio.Reader) Character {
 	fmt.Print("Choix > ")
 	classe, _ := reader.ReadString('\n')
 	classe = strings.TrimSpace(classe)
+
+	// 🔊 jouer le son quand la classe est choisie
+	playSound("/home/matthias/projet-red_Tactifight/Docs/test.wav")
 
 	var class string
 	var MaxHP, HP int
