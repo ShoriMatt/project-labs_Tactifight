@@ -18,25 +18,21 @@ type Spell struct {
 var SpellDB = map[string]Spell{
 	"Explosion de sable cosmique": {
 		Name:   "Explosion de sable cosmique",
-		Cost:   10,
 		Damage: 20,
 		Effect: "damage",
 	},
 	"Éclair gravitationnel": {
 		Name:   "Éclair gravitationnel",
-		Cost:   15,
 		Damage: 30,
 		Effect: "damage",
 	},
 	"Soin stellaire": {
 		Name:   "Soin stellaire",
-		Cost:   12,
 		Damage: -20, // négatif pour soin
 		Effect: "heal",
 	},
 	"Boule de feu": {
 		Name:   "Boule de feu",
-		Cost:   25,
 		Damage: 15,
 		Effect: "damage",
 	},
@@ -120,6 +116,9 @@ func combat(c *Character) {
 		c.gainXP(Mob.XPReward)
 		c.Gold += Mob.GoldReward
 		centerText(fmt.Sprintf("💰 Vous obtenez %d or !", Mob.GoldReward))
+
+		playSound("test2.wav")
+
 		switch Mob.Name {
 		case "Chameau toxique lunaire":
 			addInventory(c, "potion de poison cosmique")

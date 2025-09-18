@@ -16,8 +16,6 @@ func saveGame(c *Character, filename string) error {
 
 // Référence pour utiliser saveGame si elle n'est pas appelée ailleurs (évite l'avertissement "unused")
 func init() {
-	// Call saveGame with a zero-value Character and os.DevNull to mark it as used
-	// without producing persistent output.
 	_ = saveGame(&Character{}, os.DevNull)
 }
 
