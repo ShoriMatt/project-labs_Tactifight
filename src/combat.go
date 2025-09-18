@@ -17,21 +17,25 @@ type Spell struct {
 
 var SpellDB = map[string]Spell{
 	"Explosion de sable cosmique": {
+		Cost:   20,
 		Name:   "Explosion de sable cosmique",
 		Damage: 20,
 		Effect: "damage",
 	},
 	"Éclair gravitationnel": {
+		Cost:   25,
 		Name:   "Éclair gravitationnel",
 		Damage: 30,
 		Effect: "damage",
 	},
 	"Soin stellaire": {
+		Cost:   15,
 		Name:   "Soin stellaire",
 		Damage: -20, // négatif pour soin
 		Effect: "heal",
 	},
 	"Boule de feu": {
+		Cost:   10,
 		Name:   "Boule de feu",
 		Damage: 15,
 		Effect: "damage",
