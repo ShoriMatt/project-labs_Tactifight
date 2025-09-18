@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -81,14 +82,34 @@ _  /_/ /_  / /  __/  / / /_ |/ //  __/  / / / /_/ //  __/    _(__  )/ /_/ /_  / 
 	}
 
 	var c *Character
-	loaded, err := loadGame("save.json")
-	if err == nil {
-		centerText("✅ Sauvegarde trouvée, partie chargée !")
-		c = loaded
+	if _, err := os.Stat("save.json"); err == nil {
+		centerText("🎮 Une sauvegarde a été trouvée.")
+		centerText("1 - Reprendre la partie")
+		centerText("2 - Recommencer à zéro")
+		fmt.Print("Choix > ")
+
+		choice, _ := reader.ReadString('\n')
+		choice = strings.TrimSpace(choice)
+
+		if choice == "1" {
+			loaded, err := loadGame("save.json")
+			if err == nil {
+				centerText("✅ Sauvegarde chargée avec succès !")
+				c = loaded
+			} else {
+				centerText("❌ Erreur de chargement, création d’un nouveau personnage.")
+				newChar := characterCreation(reader)
+				c = &newChar
+			}
+		} else {
+			centerText("🔄 Nouvelle partie créée.")
+			newChar := characterCreation(reader)
+			c = &newChar
+		}
 	} else {
-		centerText("⚠️ Pas de sauvegarde, création d'un nouveau personnage.")
-		char := characterCreation(reader)
-		c = &char
+		centerText("⚠️ Aucune sauvegarde trouvée, création d’un nouveau personnage.")
+		newChar := characterCreation(reader)
+		c = &newChar
 	}
 
 	mainMenu(c, reader)
