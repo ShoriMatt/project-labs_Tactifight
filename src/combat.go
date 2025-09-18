@@ -103,7 +103,6 @@ func bosscachefight(c *Character) {
 		centerText(fmt.Sprintf("✨ %s est ressuscité par une énergie cosmique !\n", c.Name))
 		centerText(fmt.Sprintf("Vous revenez avec %d/%d PV et %d/%d Mana.\n", c.HP, c.MaxHP, c.Mana, c.MaxMana))
 	}
-	return
 }
 func bossfight(c *Character) bool {
 	if c.etage == 20 {
@@ -125,7 +124,7 @@ func bossfight(c *Character) bool {
 func combat(c *Character) {
 	var Mob Monster
 	p := 1
-	if c.etage == 20 && bossfight(c) == true {
+	if c.etage == 20 && bossfight(c) {
 		Mob = initEmmanuelMacroniusIV()
 		p = 0
 		centerText("Vous affrontez le boss final : Emmanuel Macronius IV !")
