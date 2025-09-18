@@ -96,6 +96,7 @@ _  /_/ /_  / /  __/  / / /_ |/ //  __/  / / / /_/ //  __/    _(__  )/ /_/ /_  / 
 			if err == nil {
 				centerText("✅ Sauvegarde chargée avec succès !")
 				c = loaded
+				playSound("test.wav")
 			} else {
 				centerText("❌ Erreur de chargement, création d’un nouveau personnage.")
 				newChar := characterCreation(reader)
