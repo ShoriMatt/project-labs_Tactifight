@@ -40,6 +40,12 @@ var SpellDB = map[string]Spell{
 		Damage: 15,
 		Effect: "damage",
 	},
+	"big bang attack": {
+		Cost:   100,
+		Name:   "big bang attack",
+		Damage: 50,
+		Effect: "damage",
+	},
 }
 
 // Gère quel pattern d'attaque utiliser selon le monstre
