@@ -53,6 +53,58 @@ func patern(p int, c *Character, turn int, mob *Monster) {
 		fmt.Println("Pattern inconnu")
 	}
 }
+func TrySpawnBrigite(c *Character, boss *Monster, spawnChance int) *Monster {
+	if boss.HP <= 0 { // Macron est mort
+		chance := rand.Intn(100) + 1 // 1 à 100
+		if chance <= spawnChance {
+			centerText("\nAttention ! Brigite Macron fait son entrée sur le champ de bataille !")
+			bosscachefight(c) // lance le combat contre Brigite
+		}
+	}
+	return nil // Macron n'est pas mort, rien ne se passe
+}
+func bosscachefight(c *Character) {
+	mob := initBrigite()
+	centerText("Vous affrontez Brigite Macron !")
+	turn := 1
+	fuite := false
+	for !mob.IsDead() && c.HP > 0 {
+		fuite = PlayerTurn(c, &mob)
+		if fuite {
+			break
+		}
+		if !mob.IsDead() {
+			BrigitePattern(&mob, c, turn)
+		}
+		turn++
+	}
+	if fuite {
+		centerText("Vous avez quitté le combat.")
+	} else if mob.IsDead() {
+		centerText("🎉 Vous avez vaincu le boss caché brigite la broyeuse !")
+		centerText("🎆 Vous avez non selement récupéré votre liberté !")
+		centerText("mais en plus vous avez sauvegardé la galaxie d'un nouveaux tirant !")
+		c.gainXP(mob.XPReward)
+		c.Gold += mob.GoldReward
+		centerText(fmt.Sprintf("💰 Vous obtenez %d or !", mob.GoldReward))
+
+		playSound("test2.wav")
+		addInventory(c, "trône gravitationnel")
+		centerText("👑 Artefact obtenu : élexir d'Immortalité (PV max augmenté)")
+		c.MaxHP += 100
+		c.HP = c.MaxHP
+	} else if c.HP <= 0 {
+		centerText(fmt.Sprintf("\n💀 %s est tombé au combat !\n", c.Name))
+
+		// Résurrection automatique
+		c.HP = c.MaxHP / 2
+		c.Mana = c.MaxMana / 2
+
+		centerText(fmt.Sprintf("✨ %s est ressuscité par une énergie cosmique !\n", c.Name))
+		centerText(fmt.Sprintf("Vous revenez avec %d/%d PV et %d/%d Mana.\n", c.HP, c.MaxHP, c.Mana, c.MaxMana))
+	}
+	return
+}
 func bossfight(c *Character) bool {
 	if c.etage == 20 {
 		centerText("Vous êtes au dernier étage. Le boss final vous attend !")
@@ -141,6 +193,7 @@ func combat(c *Character) {
 			centerText("👑 Artefact obtenu : Trône gravitationnel (PV max augmenté)")
 			c.MaxHP += 30
 			c.HP = c.MaxHP
+			TrySpawnBrigite(c, &Mob, 5) // 100% de chance de spawn Brigite si Macron est mort
 		}
 
 	} else if c.HP <= 0 {
