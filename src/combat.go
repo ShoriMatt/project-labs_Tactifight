@@ -57,13 +57,27 @@ func patern(p int, c *Character, turn int, mob *Monster) {
 		fmt.Println("Pattern inconnu")
 	}
 }
+func bossfight(c *Character) bool {
+	if c.etage == 20 {
+		centerText("Vous êtes au dernier étage. Le boss final vous attend !")
+		centerText("Voulez-vous affronter Emmanuel Macronius IV ? (o/n) : ")
+		reader := bufio.NewReader(os.Stdin)
+		choice, _ := reader.ReadString('\n')
+		choice = strings.TrimSpace(strings.ToLower(choice))
+		if choice == "o" {
+			return true
+		} else {
+			centerText("Vous décidez de ne pas affronter le boss pour l'instant.")
+		}
+	}
+	return false
+}
 
 // Combat principal
 func combat(c *Character) {
 	var Mob Monster
 	p := 1
-
-	if c.etage == 20 {
+	if c.etage == 20 && bossfight(c) == true {
 		Mob = initEmmanuelMacroniusIV()
 		p = 0
 		centerText("Vous affrontez le boss final : Emmanuel Macronius IV !")

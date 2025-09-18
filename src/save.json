@@ -1,0 +1,29 @@
+{
+  "Name": "Joueur",
+  "Class": "Sentinelle",
+  "Level": 1,
+  "MaxHP": 100,
+  "HP": 50,
+  "Initiative": 10,
+  "MaxMana": 80,
+  "Mana": 40,
+  "Inventory": [
+    "potion de vie",
+    "potion de vie",
+    "potion de vie"
+  ],
+  "Skills": [
+    "Coup de poing"
+  ],
+  "Gold": 100,
+  "Equipment": {
+    "Head": "",
+    "Torso": "",
+    "Feet": ""
+  },
+  "InventoryCapacity": 10,
+  "UpgradeCount": 0,
+  "XP": 0,
+  "XPToNext": 50,
+  "PoisonTurns": 0
+}
