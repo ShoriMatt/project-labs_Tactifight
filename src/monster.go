@@ -113,9 +113,9 @@ func GardePrésidentielSpatialPattern(gar *Monster, c *Character, turn int) {
 func initEmmanuelMacroniusIV() Monster {
 	return Monster{
 		Name:       "Emmanuel Macronius IV",
-		HP:         100,
-		MaxHP:      100,
-		XPReward:   100,
+		HP:         150,
+		MaxHP:      150,
+		XPReward:   200,
 		GoldReward: 50,
 		Initiative: rand.Intn(100),
 	}
@@ -157,5 +157,128 @@ func EmmanuelMacroniusIVPattern(boss *Monster, c *Character, turn int) {
 		c.HP = 0
 	}
 	centerText(fmt.Sprintf("%s attaque et inflige %d dégâts !", boss.Name, damage))
+	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+}
+func initBrigite() Monster {
+	return Monster{
+		Name:       "Brigite la Broyeuse",
+		HP:         500,
+		MaxHP:      500,
+		XPReward:   1000,
+		GoldReward: 300,
+		Initiative: rand.Intn(100),
+	}
+}
+
+func BrigitePattern(boss_2 *Monster, c *Character, turn int) {
+	Mob := *boss_2
+	random := rand.Intn(100)
+
+	// Attaque spéciale débloquée si Brigite est à moins de 50% PV
+	if boss_2.HP <= boss_2.MaxHP/2 && random < 5 {
+		damage := 200
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s utilise : Dynastie Élyséenne → combo spécial : elle appelle Emmanuel Macronius V pour un coup combiné ! Vous subissez %d dégâts !!!", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 15 {
+		random2 := rand.Intn(100)
+		damage := 1
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s utilise Coup de Sac Vuitton ! peut vous faire sauter votre tour en vous infligeant %d dégâts", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		if random2 < 50 {
+			CloneBancalDeMacronPattern(&Mob, c, turn)
+		}
+		return
+	} else if random < 35 {
+		damage := 35
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s utilise Frappe Première Dame ! Vous êtes projeté et subissez %d dégâts !", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 50 {
+		damage := 50
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s vous attaque avec sa Main de Fer dans un Gant Dior” → attaque lourde qui inflige %d dégâts avec un style raffiné.", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 60 {
+		heal := 20 + rand.Intn(21) // rend 20 à 30 PV
+		boss_2.HP += heal
+		if boss_2.HP > boss_2.MaxHP {
+			boss_2.HP = boss_2.MaxHP
+		}
+		centerText(fmt.Sprintf("%s utilise une Retouche Esthétique et récupère %d PV !", boss_2.Name, heal))
+		centerText(fmt.Sprintf("%s : %d/%d PV", boss_2.Name, boss_2.HP, boss_2.MaxHP))
+		return
+	} else if random < 70 {
+		damage := 100
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+		centerText(fmt.Sprintf("%s utilise gifle stélaire ! Vous mais preque KO et vous ridiculise devant toute l'arrène et subissez %d dégâts !", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 80 {
+		damage := 70
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+
+		centerText(fmt.Sprintf("%s vous fait Un Baiser Assassin sur la joue… vous inflige des dégâts psychologiques irréversible ! et subissez %d dégâts !", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 85 {
+		damage := 60
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+
+		centerText(fmt.Sprintf("%s vous donne un Coup de Talon Cosmique → frappe élégante mais complètement absurde. ! et subissez %d dégâts !", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 90 {
+		damage := 60
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+
+		centerText(fmt.Sprintf("%s utilise Serrage de Main Mortel → un simple shake qui vous casse le bras! et inflige %d dégâts !", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	} else if random < 95 {
+		damage := 60
+		c.HP -= damage
+		if c.HP < 0 {
+			c.HP = 0
+		}
+
+		centerText(fmt.Sprintf("%s Pose de Selfie Explosive → elle pose, vous etes traumatisé par la scène ! et inflige %d dégâts !", boss_2.Name, damage))
+		centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
+		return
+	}
+	damage := 10
+	c.HP -= damage
+	if c.HP < 0 {
+		c.HP = 0
+	}
+	centerText(fmt.Sprintf("%s vous frappe et inflige %d dégâts !", boss_2.Name, damage))
 	centerText(fmt.Sprintf("%s : %d/%d PV", c.Name, c.HP, c.MaxHP))
 }
