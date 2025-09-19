@@ -3,23 +3,22 @@
 ## 1. Informations générales
 - **Nom du projet** : Tactifight
 - **Type de projet** : Mini-RPG en ligne de commande (Go)
-- **Équipe** : [à compléter]
-- **Date de démarrage** : [JJ/MM/AAAA]
-- **Date de livraison prévue** : [JJ/MM/AAAA]
+- **Équipe** : Matthias, Jérémy et Evann
+- **Date de démarrage** : [12/09/2025]
+- **Date de fin prévue** : [19/09/2025]
 
 ---
 
 ## 2. Objectifs du projet
-- Objectif principal : [décrire l’objectif général du projet]
+- Objectif principal :  Création d’un personne de jeux vidéo
+			Création des interface lui permettant d’interagir avec des objets et son environnement
+			Création d’un système de vente et de fabrication d’objets
+			Création d’un système de combat tour par tour
 - Objectifs secondaires :
-  - [exemple] Créer un RPG simple et jouable dans le terminal.
-  - [exemple] Intégrer humour + mécaniques cosmiques originales.
-  - [à compléter]
-
----
-
-## 3. Périmètre fonctionnel
-### Fonctionnalités prévues (MVP)
+  - Créer un RPG simple et jouable dans le terminal.
+  - Intégrer humour + mécaniques cosmiques originales.
+  
+### 3. Fonctionnalités prévues (MVP)
 - Création de personnage
 - Combats au tour par tour
 - Inventaire (potions de vie/mana, poison cosmique, artefacts)
@@ -27,62 +26,21 @@
 - Marchand / Forgeron
 - Sons et affichage ASCII
 
-### Fonctionnalités optionnelles / futures
+### Fonctionnalités optionnelles
 - Sauvegarde/chargement de partie
-- Nouvelles classes
-- Mode multijoueur local
-- [à compléter]
 
----
+## 4. Suivi des tâches (Backlog simplifié)
+- [] Implémenter la création de personnage
+- [] Gérer les potions de vie
+- [] Ajouter le mana et les sorts
+- [] Créer le marchand
+- [] Définir les patterns des boss
+- [] Ajouter les effets sonores
 
-## 4. Organisation de l’équipe
-Matthias
-Jérémy
-Evann
-
----
-
-## 5. Planning prévisionnel (Gantt simplifié)
-| Phase                  | Début | Fin | Responsable | Statut |
-|-------------------------|-------|-----|-------------|--------|
-| Analyse & conception    |       |     |             |        |
-| Développement initial   |       |     |             |        |
-| Ajout des boss          |       |     |             |        |
-| Intégration du shop     |       |     |             |        |
-| Tests unitaires         |       |     |             |        |
-| Finalisation & livraison|       |     |             |        |
-
----
-
-## 6. Suivi des tâches (Backlog simplifié)
-- [ ] Implémenter la création de personnage
-- [ ] Gérer les potions de vie
-- [ ] Ajouter le mana et les sorts
-- [ ] Créer le marchand
-- [ ] Définir les patterns des boss
-- [ ] Ajouter les effets sonores
-- [ ] [à compléter]
-
----
-
-## 7. Risques identifiés
-- Risque technique : [exemple] difficulté à gérer l’audio en terminal.
-- Risque humain : [exemple] retard si un membre de l’équipe est absent.
-- Risque projet : [exemple] périmètre trop ambitieux.
-- Solutions prévues : [à compléter]
-
----
-
-## 8. Livrables attendus
+## 5. Livrables attendus
 - Code source complet (Go)
 - README.md documenté
 - ASCII Art (logo, menus)
 - Document de gestion de projet rempli
 - [à compléter]
-
----
-
-## 9. Notes complémentaires
-- [à compléter]
-
 
