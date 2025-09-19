@@ -44,7 +44,7 @@ func initCharacter(name string, class string, level int, maxHP int, currentHP in
 		MaxMana:           MaxMana,
 		Mana:              Mana,
 		Inventory:         inventory,
-		Skills:            []string{"Coup de poing"},
+		Skills:            []string{},
 		Gold:              100,
 		Equipment:         Equipment{Head: "", Torso: "", Feet: ""},
 		InventoryCapacity: 10,
