@@ -158,6 +158,7 @@ func combat(c *Character) {
 	turn := 1
 	fuite := false
 	for !Mob.IsDead() && c.HP > 0 {
+		centerText(fmt.Sprintf("\n--- Tour %d --- \n", turn))
 		fuite = PlayerTurn(c, &Mob)
 		if fuite {
 			break
