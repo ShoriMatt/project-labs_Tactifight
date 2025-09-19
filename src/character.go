@@ -188,14 +188,14 @@ func characterCreation(reader *bufio.Reader) Character {
 	var Initiative int
 	switch classe {
 	case "1":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Assasin", 80, 40, 100, 50, 15
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Assasin", 80, 40, 100, 100, 15
 	case "2":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Sentinelle", 100, 50, 80, 40, 10
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Sentinelle", 100, 50, 80, 80, 10
 	case "3":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Tank", 120, 60, 70, 35, 5
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Tank", 120, 60, 70, 70, 5
 	default:
 		centerText("Choix invalide. Classe par défaut : Sentinelle")
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Sentinelle", 100, 50, 80, 40, 10
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Sentinelle", 100, 50, 80, 80, 10
 	}
 
 	initialInventory := []string{"potion de vie", "potion de vie", "potion de vie"}
