@@ -182,8 +182,8 @@ func combat(c *Character) {
 
 		switch Mob.Name {
 		case "Chameau toxique lunaire":
-			addInventory(c, "potion de poison cosmique")
-			centerText("🎁 Vous obtenez une Potion de poison cosmique !")
+			addInventory(c, "bave de chameau mutant")
+			centerText("🎁 Vous obtenez de la bave de chameau mutant !")
 
 		case "Clone Bancal de Macron":
 			spell := "Explosion de sable cosmique"
