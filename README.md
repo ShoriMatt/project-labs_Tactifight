@@ -30,8 +30,8 @@ Fonctionnalités
 Installation
 
 1. Clonez le dépôt :
-   ```bash
    git clone https://github.com/ShoriMatt/projet-red_Tactifight
    cd src/
+   go mod tidy
    go run .
 
