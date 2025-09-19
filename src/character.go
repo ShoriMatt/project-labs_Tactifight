@@ -188,11 +188,11 @@ func characterCreation(reader *bufio.Reader) Character {
 	var Initiative int
 	switch classe {
 	case "1":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Assasin", 80, 40, 100, 100, 15
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Assasin", 80, 40, 100, 100, 150
 	case "2":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Sentinelle", 100, 50, 80, 80, 10
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Sentinelle", 100, 50, 80, 80, 125
 	case "3":
-		class, MaxHP, HP, MaxMana, Mana, Initiative = "Tank", 120, 60, 70, 70, 5
+		class, MaxHP, HP, MaxMana, Mana, Initiative = "Tank", 120, 60, 70, 70, 100
 	default:
 		centerText("Choix invalide. Classe par défaut : Sentinelle")
 		class, MaxHP, HP, MaxMana, Mana, Initiative = "Sentinelle", 100, 50, 80, 80, 10
