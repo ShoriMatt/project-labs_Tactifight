@@ -1,0 +1,15 @@
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.exe
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.deps.json
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.runtimeconfig.json
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.dll
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\bin\Debug\net9.0\ConsoleApp1.pdb
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.AssemblyInfoInputs.cache
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.AssemblyInfo.cs
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.csproj.CoreCompileInputs.cache
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.sourcelink.json
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.dll
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\refint\ConsoleApp1.dll
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.pdb
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ConsoleApp1.genruntimeconfig.cache
+C:\Users\matth\project-labs_Tactifight\ConsoleApp1\obj\Debug\net9.0\ref\ConsoleApp1.dll

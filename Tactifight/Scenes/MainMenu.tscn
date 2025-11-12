@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3 uid="uid://dn82hf1tj5prg"]
+
+[ext_resource type="Script" uid="uid://blr0jmv41hpbj" path="res://Scenes/MainMenu.cs" id="1_tt5f1"]
+[ext_resource type="Texture2D" uid="uid://wafcd8jqeck4" path="res://Textures/TactifightBackground.tres" id="2_853f1"]
+[ext_resource type="FontFile" uid="uid://be3f0u1rnmlne" path="res://Assets/Fonts/STARWARS.TTF" id="3_8saeu"]
+
+[sub_resource type="Theme" id="Theme_ghw46"]
+Label/font_sizes/font_size = 100
+Label/fonts/font = ExtResource("3_8saeu")
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tt5f1")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -384.0
+offset_top = -216.0
+offset_right = 384.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_853f1")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = -64.0
+offset_right = 51.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_ghw46")
+text = "TACTIFIGHT"
+horizontal_alignment = 1
+
+[node name="Button_Commencer" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Commencer"
+
+[node name="Button_Options" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="Button_Quitter" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quitter"

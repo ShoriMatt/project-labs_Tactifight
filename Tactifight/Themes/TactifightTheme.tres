@@ -1,0 +1,59 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://b73odhjv1pb46"]
+
+[ext_resource type="FontFile" uid="uid://be3f0u1rnmlne" path="res://Assets/Fonts/STARWARS.TTF" id="1_37vof"]
+
+[sub_resource type="StyleBoxFlat" id="4"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+bg_color = Color(0.176471, 0.078431, 0.270588, 1)
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.243137, 0.552941, 1, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="2"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+bg_color = Color(0.419608, 0.180392, 0.686274, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="1"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+bg_color = Color(0.176471, 0.078431, 0.270588, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="3"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+bg_color = Color(0.913725, 0.305882, 0.180392, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[resource]
+default_font = ExtResource("1_37vof")
+default_font_size = 22
+Button/colors/font_color = Color(0.956863, 0.952941, 0.933333, 1)
+Button/styles/focus = SubResource("4")
+Button/styles/hover = SubResource("2")
+Button/styles/normal = SubResource("1")
+Button/styles/pressed = SubResource("3")
+Label/colors/font_color = Color(0.7615981, 0, 0.16133744, 1)
+Label/font_sizes/font_size = 34
+Label/fonts/font = ExtResource("1_37vof")
