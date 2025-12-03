@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://be3f0u1rnmlne"
-path="res://.godot/imported/STARWARS.TTF-20fbc278e1742bf217cb965311cd9f1e.fontdata"
+uid="uid://dukfm300odg5y"
+path="res://.godot/imported/SF Distant Galaxy.ttf-cfa22c32a59946db114b45a8dee33cf3.fontdata"
 
 [deps]
 
-source_file="res://Assets/Fonts/STARWARS.TTF"
-dest_files=["res://.godot/imported/STARWARS.TTF-20fbc278e1742bf217cb965311cd9f1e.fontdata"]
+source_file="res://Assets/Fonts/SF Distant Galaxy.ttf"
+dest_files=["res://.godot/imported/SF Distant Galaxy.ttf-cfa22c32a59946db114b45a8dee33cf3.fontdata"]
 
 [params]
 
@@ -30,12 +30,7 @@ Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[{
-"chars": [],
-"glyphs": [],
-"name": "Nouvelle configuration",
-"size": Vector2i(16, 0)
-}]
+preload=[]
 language_support={}
 script_support={}
 opentype_features={}

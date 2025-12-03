@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactifight", "Tactifight.csproj", "{BA087A8C-12BD-4F1A-80F5-D4422CA1C2A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tactifight", "Tactifight.csproj", "{9D1269A3-0365-47B5-B8C1-EB295F02A982}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BA087A8C-12BD-4F1A-80F5-D4422CA1C2A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA087A8C-12BD-4F1A-80F5-D4422CA1C2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA087A8C-12BD-4F1A-80F5-D4422CA1C2A6}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{BA087A8C-12BD-4F1A-80F5-D4422CA1C2A6}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{BA087A8C-12BD-4F1A-80F5-D4422CA1C2A6}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{BA087A8C-12BD-4F1A-80F5-D4422CA1C2A6}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{9D1269A3-0365-47B5-B8C1-EB295F02A982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D1269A3-0365-47B5-B8C1-EB295F02A982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D1269A3-0365-47B5-B8C1-EB295F02A982}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{9D1269A3-0365-47B5-B8C1-EB295F02A982}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{9D1269A3-0365-47B5-B8C1-EB295F02A982}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{9D1269A3-0365-47B5-B8C1-EB295F02A982}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

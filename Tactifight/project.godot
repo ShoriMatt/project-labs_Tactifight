@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="Tactifight"
-run/main_scene="uid://dn82hf1tj5prg"
-config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
+run/main_scene="uid://chp8kjgcuasv6"
+config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
 
 project/assembly_name="Tactifight"
+project/solution="Tactifight.sln"
 
 [rendering]
 

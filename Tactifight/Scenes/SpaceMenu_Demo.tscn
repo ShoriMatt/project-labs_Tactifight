@@ -1,0 +1,171 @@
+[gd_scene load_steps=13 format=3 uid="uid://chp8kjgcuasv6"]
+
+[ext_resource type="Script" uid="uid://bt6cs41hl200d" path="res://Scenes/MainMenu.cs" id="1_ui4ko"]
+[ext_resource type="Shader" uid="uid://c5evbnlfq6nlw" path="res://Assets/Shaders/starfield.gdshader" id="1_voohd"]
+[ext_resource type="Texture2D" uid="uid://btww0y5m7bugw" path="res://Assets/Rocket/Rocket.png" id="4_7dyul"]
+[ext_resource type="Shader" uid="uid://dw4ikguey07vt" path="res://Assets/Shaders/comet.gdshader" id="4_f2g58"]
+[ext_resource type="FontFile" uid="uid://dukfm300odg5y" path="res://Assets/Fonts/SF Distant Galaxy.ttf" id="5_knxtr"]
+
+[sub_resource type="ShaderMaterial" id="2"]
+shader = ExtResource("1_voohd")
+shader_parameter/density = 0.3
+shader_parameter/twinkle = 0.6
+shader_parameter/drift = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="4"]
+shader = ExtResource("4_f2g58")
+shader_parameter/center = Vector2(0.75, 0.25)
+shader_parameter/dir = Vector2(-1, -0.2)
+shader_parameter/tail = 0.35
+shader_parameter/core = 0.015
+shader_parameter/color = Vector3(1, 0.95, 0.75)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_voohd"]
+atlas = ExtResource("4_7dyul")
+region = Rect2(0, 0, 256, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ui4ko"]
+atlas = ExtResource("4_7dyul")
+region = Rect2(256, 0, 256, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p3sxs"]
+atlas = ExtResource("4_7dyul")
+region = Rect2(512, 0, 256, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f2g58"]
+atlas = ExtResource("4_7dyul")
+region = Rect2(768, 0, 256, 1024)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_voohd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_voohd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ui4ko")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p3sxs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f2g58")
+}],
+"loop": true,
+"name": &"rocket_fly",
+"speed": 8.0
+}]
+
+[node name="MainMenuDemo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ui4ko")
+
+[node name="Background" type="ColorRect" parent="."]
+z_index = -200
+material = SubResource("2")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 5.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Comet" type="ColorRect" parent="."]
+z_index = -25
+material = SubResource("4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3080.0
+offset_top = -523.0
+offset_right = 53.0
+offset_bottom = 1259.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_right = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8139271, 0.8139268, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 0.914, 0.227, 1)
+theme_override_constants/line_spacing = 2
+theme_override_fonts/font = ExtResource("5_knxtr")
+theme_override_font_sizes/font_size = 96
+text = "TACTIFIGHT"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_knxtr")
+theme_override_font_sizes/font_size = 45
+text = "Les Sables Cosmiques"
+horizontal_alignment = 1
+
+[node name="Button_Commencer" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Commencer"
+
+[node name="Button_Options" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="Button_Quitter" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quitter"
+
+[node name="LoadingScreen" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="LoadingScreen"]
+layout_mode = 0
+offset_top = -2.0
+offset_right = 1157.0
+offset_bottom = 649.0
+color = Color(0, 0, 0, 1)
+
+[node name="Rocket" type="AnimatedSprite2D" parent="LoadingScreen/ColorRect"]
+position = Vector2(1063.25, 563.25)
+rotation = -0.7120943
+scale = Vector2(0.4589843, 0.33642578)
+sprite_frames = SubResource("SpriteFrames_voohd")
+animation = &"rocket_fly"
+autoplay = "rocket_fly"
+frame = 1
+frame_progress = 0.14457415
+
+[node name="Fader" type="ColorRect" parent="."]
+visible = false
+z_index = 4096
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0, 0, 0, 1)
