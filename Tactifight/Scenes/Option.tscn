@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcmms61erad1m"]
+
+[ext_resource type="Script" uid="uid://bb4ja5q1y8v52" path="res://Scenes/Option.cs" id="1_2a33a"]
+[ext_resource type="Shader" uid="uid://c5evbnlfq6nlw" path="res://Assets/Shaders/starfield.gdshader" id="1_wuxk4"]
+[ext_resource type="FontFile" uid="uid://dukfm300odg5y" path="res://Assets/Fonts/SF Distant Galaxy.ttf" id="2_qum3a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qum3a"]
+shader = ExtResource("1_wuxk4")
+shader_parameter/density = 0.3
+shader_parameter/twinkle = 0.6
+shader_parameter/drift = Vector2(0, 0)
+
+[node name="Option" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2a33a")
+
+[node name="Background" type="ColorRect" parent="."]
+z_index = -200
+material = SubResource("ShaderMaterial_qum3a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 5.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Background"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 0
+offset_left = 3.0
+offset_top = 38.0
+offset_right = 1157.0
+offset_bottom = 213.0
+theme_override_fonts/font = ExtResource("2_qum3a")
+theme_override_font_sizes/font_size = 45
+text = "Parametre"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 35.0
+offset_right = 134.0
+offset_bottom = 86.0
+text = "Retour"

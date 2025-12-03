@@ -28,7 +28,7 @@ public partial class MainMenu : Control
 
 	private void OnOptionsPressed()
 	{
-		GD.Print("Menu Options à venir...");
+		GetTree().ChangeSceneToFile("res://Scenes/Option.tscn");
 	}
 
 	private void OnQuitterPressed()

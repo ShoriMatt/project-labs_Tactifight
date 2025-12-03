@@ -159,8 +159,7 @@ scale = Vector2(0.4589843, 0.33642578)
 sprite_frames = SubResource("SpriteFrames_voohd")
 animation = &"rocket_fly"
 autoplay = "rocket_fly"
-frame = 1
-frame_progress = 0.14457415
+frame_progress = 0.33010054
 
 [node name="Fader" type="ColorRect" parent="."]
 visible = false
