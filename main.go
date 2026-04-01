@@ -24,6 +24,7 @@ const (
 	ModeMainMenu GameMode = iota
 	ModeWorld
 	ModeInventory
+	ModeClassSelect
 	ModeShop
 	ModeForge
 	ModeBattle
@@ -105,16 +106,17 @@ type Player struct {
 }
 
 type Game struct {
-	Mode          GameMode
-	Maps          map[string]*GameMap
-	CurrentMap    *GameMap
-	Player        Player
-	Enemy         Enemy
-	Camera        rl.Camera2D
-	Interaction   string
-	BottomMessage string
-	Rng           *rand.Rand
-	MenuIndex     int
+	Mode           GameMode
+	Maps           map[string]*GameMap
+	CurrentMap     *GameMap
+	Player         Player
+	Enemy          Enemy
+	Camera         rl.Camera2D
+	Interaction    string
+	BottomMessage  string
+	Rng            *rand.Rand
+	MenuIndex      int
+	ClassMenuIndex int
 }
 
 func main() {
@@ -192,6 +194,8 @@ func (g *Game) Update(dt float32) {
 		g.updateWorld(dt)
 	case ModeInventory:
 		g.updateInventory()
+	case ModeClassSelect:
+		g.updateClassSelect()
 	case ModeShop:
 		g.updateShop()
 	case ModeForge:
@@ -210,6 +214,9 @@ func (g *Game) Draw() {
 	case ModeInventory:
 		g.drawWorld()
 		g.drawInventoryOverlay()
+	case ModeClassSelect:
+		g.drawWorld()
+		g.drawClassSelectionOverlay()
 	case ModeShop:
 		g.drawWorld()
 		g.drawShopOverlay()
@@ -413,6 +420,79 @@ func (g *Game) updateShop() {
 		} else {
 			g.BottomMessage = "Pas assez d'or."
 		}
+	}
+}
+
+func (g *Game) updateClassSelect() {
+	classes := []string{"Guerrier", "Mage", "Eclaireur"}
+	if rl.IsKeyPressed(rl.KeyUp) {
+		g.ClassMenuIndex--
+		if g.ClassMenuIndex < 0 {
+			g.ClassMenuIndex = len(classes) - 1
+		}
+	}
+	if rl.IsKeyPressed(rl.KeyDown) {
+		g.ClassMenuIndex++
+		if g.ClassMenuIndex >= len(classes) {
+			g.ClassMenuIndex = 0
+		}
+	}
+
+	if rl.IsKeyPressed(rl.KeyEnter) || rl.IsKeyPressed(rl.KeySpace) {
+		selected := classes[g.ClassMenuIndex]
+		g.applyPlayerClass(selected)
+		g.BottomMessage = "Classe sélectionnée : " + selected
+		g.Mode = ModeWorld
+		return
+	}
+
+	if rl.IsKeyPressed(rl.KeyEscape) {
+		g.Mode = ModeWorld
+		g.BottomMessage = "Changement de classe annulé."
+		return
+	}
+}
+
+func (g *Game) drawClassSelectionOverlay() {
+	rl.DrawRectangle(180, 150, 920, 420, rl.NewColor(8, 10, 18, 220))
+	rl.DrawRectangleLines(180, 150, 920, 420, rl.NewColor(214, 208, 0, 255))
+	rl.DrawText("Choisissez votre classe", 420, 170, 36, rl.NewColor(214, 208, 0, 255))
+
+	classes := []string{"Guerrier", "Mage", "Eclaireur"}
+	for i, className := range classes {
+		color := rl.LightGray
+		prefix := "  "
+		if i == g.ClassMenuIndex {
+			color = rl.NewColor(120, 200, 255, 255)
+			prefix = "> "
+		}
+		rl.DrawText(fmt.Sprintf("%s%s", prefix, className), 430, int32(240+i*70), 32, color)
+	}
+
+	rl.DrawText("Flèches haut/bas : choisir", 450, 480, 24, rl.Gray)
+	rl.DrawText("Entrée : confirmer, Échap : annuler", 400, 520, 24, rl.Gray)
+}
+
+func (g *Game) applyPlayerClass(className string) {
+	g.Player.Class = className
+	switch className {
+	case "Guerrier":
+		g.Player.MaxHP = 140
+		g.Player.Attack = 20
+		g.Player.Defense = 12
+	case "Mage":
+		g.Player.MaxHP = 100
+		g.Player.Attack = 26
+		g.Player.Defense = 5
+	case "Eclaireur":
+		g.Player.MaxHP = 110
+		g.Player.Attack = 16
+		g.Player.Defense = 8
+	}
+	if g.Player.HP > g.Player.MaxHP {
+		g.Player.HP = g.Player.MaxHP
+	} else if g.Player.HP < 1 {
+		g.Player.HP = 1
 	}
 }
 
@@ -631,6 +711,10 @@ func (g *Game) tryInteractNPC() bool {
 			case "Forgeron":
 				g.BottomMessage = fmt.Sprintf("%s: 1 Arme, 2 Armure, 3 Réparer", npc.Name)
 				g.Mode = ModeForge
+			case "Maître de classe":
+				g.BottomMessage = fmt.Sprintf("%s: Choisis ta nouvelle classe.", npc.Name)
+				g.Mode = ModeClassSelect
+				g.ClassMenuIndex = 0
 			case "Pilote":
 				g.BottomMessage = fmt.Sprintf("%s: Le hangar est prêt. Carburant: %d", npc.Name, g.Player.Fuel)
 			case "Guide":
@@ -921,6 +1005,7 @@ func buildStationMap() *GameMap {
 		NPCs: []NPC{
 			{Name: "Nox", Role: "Marchand", X: float32(5*tileSize + 16), Y: float32(5*tileSize + 16), Color: rl.NewColor(255, 170, 60, 255), Dialogues: []string{"Bienvenue."}},
 			{Name: "Vera", Role: "Forgeron", X: float32(10*tileSize + 16), Y: float32(5*tileSize + 16), Color: rl.NewColor(170, 120, 255, 255), Dialogues: []string{"La forge est prête."}},
+			{Name: "Lira", Role: "Maître de classe", X: float32(12*tileSize + 16), Y: float32(11*tileSize + 16), Color: rl.NewColor(120, 220, 255, 255), Dialogues: []string{"Choisis bien ta voie."}},
 			{Name: "Sol", Role: "Pilote", X: float32(15*tileSize + 16), Y: float32(5*tileSize + 16), Color: rl.NewColor(80, 200, 255, 255), Dialogues: []string{"Hangar opérationnel."}},
 			{Name: "Kael", Role: "Guide", X: float32(8*tileSize + 16), Y: float32(11*tileSize + 16), Color: rl.NewColor(100, 240, 140, 255), Dialogues: []string{"Explore le désert."}},
 		},
